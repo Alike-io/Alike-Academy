@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,34 +7,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Alike.io Brand Colors */
+  --gold: #ff6b35;
+  --gold-light: #ff8c5a;
+  --gold-pale: rgba(255,107,53,0.1);
+  --teal: #ffaa5c;
+  --teal-pale: rgba(255,170,92,0.12);
+  --rose: #ff4757;
+  --rose-pale: rgba(255,71,87,0.1);
+  --sage: #2ed573;
+  --sage-pale: rgba(46,213,115,0.1);
+  --amber: #ffa502;
+  --sky: #eccc68;
+  --sidebar-w: 260px;
+  --header-h: 64px;
+}
+/* DARK MODE (default) */
+html[data-theme="dark"] {
   --navy: #0f0f0f;
   --navy-mid: #161616;
   --navy-light: #1e1e1e;
   --navy-card: #1a1a1a;
-  /* Primary: Alike coral/phoenix orange */
-  --gold: #ff6b35;
-  --gold-light: #ff8c5a;
-  --gold-pale: rgba(255,107,53,0.1);
-  /* Secondary: warm amber from phoenix */
-  --teal: #ffaa5c;
-  --teal-pale: rgba(255,170,92,0.1);
-  /* Alert/error */
-  --rose: #ff4757;
-  --rose-pale: rgba(255,71,87,0.1);
-  /* Success */
-  --sage: #2ed573;
-  --sage-pale: rgba(46,213,115,0.1);
-  /* Warm accent */
-  --amber: #ffa502;
-  --sky: #eccc68;
   --text: #f5f5f5;
   --text-muted: #a0a0a0;
   --text-dim: #666666;
   --border: rgba(255,107,53,0.2);
   --border-soft: rgba(255,255,255,0.06);
-  --sidebar-w: 260px;
-  --header-h: 64px;
+}
+/* LIGHT MODE */
+html[data-theme="light"] {
+  --navy: #f8f7f5;
+  --navy-mid: #f0ede8;
+  --navy-light: #e8e4dd;
+  --navy-card: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #555555;
+  --text-dim: #888888;
+  --border: rgba(255,107,53,0.25);
+  --border-soft: rgba(0,0,0,0.08);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -579,6 +588,46 @@ body {
 }
 .tab-content.active { animation: fadeSlideIn 0.3s ease; }
 
+
+/* ── THEME TOGGLE ── */
+.theme-toggle {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--navy-light); border: 1px solid var(--border-soft);
+  border-radius: 20px; padding: 5px 10px; cursor: pointer;
+  font-size: 12px; color: var(--text-muted); font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s; white-space: nowrap;
+}
+.theme-toggle:hover { border-color: var(--border); color: var(--text); }
+.theme-toggle .icon { font-size: 14px; }
+html[data-theme="light"] .dark-icon { display: none; }
+html[data-theme="light"] .light-icon { display: inline; }
+html[data-theme="dark"] .dark-icon { display: inline; }
+html[data-theme="dark"] .light-icon { display: none; }
+/* Light mode overrides */
+html[data-theme="light"] #header { background: rgba(248,247,245,0.97); }
+html[data-theme="light"] .dest-header-bg { background: linear-gradient(135deg, #e8e4dd 0%, #f0ede8 100%) !important; }
+html[data-theme="light"] .info-card { box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+html[data-theme="light"] .package-card { box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+html[data-theme="light"] .script-block { background: #f0ede8; }
+html[data-theme="light"] .objection-item { box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+html[data-theme="light"] .region-card { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+html[data-theme="light"] #sidebar { background: #f0ede8; border-right: 1px solid rgba(0,0,0,0.08); }
+html[data-theme="light"] .sidebar-item:hover { background: #e8e4dd; }
+html[data-theme="light"] .sidebar-item.active { background: rgba(255,107,53,0.08); }
+html[data-theme="light"] .home-stat { background: #f0ede8; }
+html[data-theme="light"] .kcheck-opt { background: #f0ede8; }
+html[data-theme="light"] .dest-tabs { background: var(--navy); border-bottom: 1px solid var(--border-soft); }
+
+
+html[data-theme="light"] select {
+  background: var(--navy-card) !important;
+  color: var(--text) !important;
+  border-color: var(--border-soft) !important;
+}
+html[data-theme="light"] #__calc_result {
+  background: var(--navy-light);
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 1100px) {
   .cards-3 { grid-template-columns: 1fr 1fr; }
@@ -607,6 +656,11 @@ body {
     <span class="search-icon">🔍</span>
     <input type="text" id="searchInput" placeholder="Search destinations…" oninput="filterSidebar(this.value)">
   </div>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+    <span class="icon dark-icon">🌙</span>
+    <span class="icon light-icon">☀️</span>
+    <span id="theme-label">Light</span>
+  </button>
   <div class="track-switcher">
     <button class="track-btn pre active" onclick="setTrack('pre')">Pre-Sales Track</button>
     <button class="track-btn expert" onclick="setTrack('expert')">Destination Expert Track</button>
@@ -760,16 +814,55 @@ vietnam: {
   currency: "VND (Vietnamese Dong)", isoCode: "VN",
   visaInfo: "E-Visa available online (30 days, ₹1,500 approx). Visa on Arrival possible through agent letter. Processing: 3 business days.",
   capital: "Hanoi", flightTime: "4–5 hrs from major Indian cities",
-  flightCost: '₹18,000–35,000 return pp',
-  flightRoutes: 'IndiGo/Vietjet Delhi–Hanoi direct ~4.5h',
-  visaType: 'E-Visa (online)',
+  flightCost: '₹45,000 return per person (economy)',
+  flightRoutes: 'IndiGo/Vietjet Delhi–Hanoi direct ~4.5h; Air India Mumbai–HCMC. Multiple options.',
+  visaType: 'E-Visa (100% digital — no embassy visit)',
   visaCost: '~₹2,100 (USD 25)',
-  visaProcessing: '3 business days',
-  visaExpress: 'Yes — 1 day express ~₹4,200 (USD 50)',
+  visaProcessing: '7 working days once applied. Start minimum 15 days before travel.',
+  visaExpress: 'No express option — plan ahead. Minimum 15 days before travel date to initiate.',
   visaValidity: '30 days, single entry',
-  visaTip: 'Apply at evisa.xuatnhapcanh.gov.vn. White background photo. Very high approval rate for Indians.',
+  visaTip: '100% digital process — no embassy visit required. Minimum booking lead time: 15 days before travel (to process visa). If you have already arranged your own visa: 2 days minimum before travel.',
   languages: "Vietnamese (English widely spoken in tourist areas)",
   overview: `Vietnam is Southeast Asia's most versatile destination — from the emerald waters of Ha Long Bay and the ancient town of Hoi An, to the buzzing street food scene of Hanoi and Ho Chi Minh City. For Indian travellers it offers an excellent value-for-money proposition with visually stunning landscapes, rich history, and deeply flavourful cuisine. The country runs North-South spanning 1,600 km — most packages split between Hanoi (North), Da Nang/Hoi An (Central), and Ho Chi Minh City (South).`,
+  cities: [
+    { name: "Hanoi", region: "North Vietnam", emoji: "🏛️",
+      highlight: "Vietnam's ancient capital — French colonial boulevards, Hoan Kiem Lake, Old Quarter street food, gateway to Ha Long Bay. Best for history, culture, and authenticity.",
+      best: "October–April (cool, dry)", avoid: "June–August (hot, humid)",
+      topSights: ["Old Quarter 36 Streets", "Hoan Kiem Lake & Ngoc Son Temple", "Ho Chi Minh Mausoleum", "Temple of Literature", "Tran Quoc Pagoda", "Dong Xuan Market"],
+      recommended: "2 nights minimum. Combined with Ha Long Bay is the classic North Vietnam experience.",
+      bestFor: "Culture, history, food, gateway to Ha Long Bay" },
+    { name: "Da Nang", region: "Central Vietnam", emoji: "🌉",
+      highlight: "Vietnam's beach city — home to the viral Golden Bridge (giant stone hands holding the bridge). Base for Hoi An day trips and Ba Na Hills. White sand My Khe Beach.",
+      best: "February–August (dry season)", avoid: "October–November (typhoons)",
+      topSights: ["Golden Bridge at Ba Na Hills", "My Khe Beach", "Marble Mountains", "Dragon Bridge (fire on weekends)", "Han Market"],
+      recommended: "2 nights. Always combine with Hoi An (30 min drive).",
+      bestFor: "Beach, viral photos, Hoi An access, theme park" },
+    { name: "Ho Chi Minh City", region: "South Vietnam", emoji: "🏙️",
+      highlight: "Vietnam's commercial capital — high energy, rooftop bars, war history (Cu Chi Tunnels, War Museum), street food scene. Gateway to Mekong Delta.",
+      best: "December–April (dry season)", avoid: "May–November (monsoon afternoons)",
+      topSights: ["War Remnants Museum", "Cu Chi Tunnels", "Reunification Palace", "Ben Thanh Market", "Bui Vien Walking Street", "Mekong Delta day trip"],
+      recommended: "2 nights. Often the end-point of a North–South Vietnam circuit.",
+      bestFor: "History, nightlife, food, Mekong access" },
+    { name: "Sapa", region: "North Vietnam (Mountain)", emoji: "🌿",
+      highlight: "Dramatic terraced rice fields, ethnic minority villages (H'mong, Dao), Fansipan peak (Vietnam's highest). Best in Sept–Nov when fields are golden.",
+      best: "September–November (golden rice), March–May (flowers)", avoid: "December–February (cold fog), June–August (mud)",
+      topSights: ["Fansipan Peak Cable Car", "Muong Hoa Valley Trek", "Cat Cat Village", "Ta Phin Ethnic Village", "Golden rice terraces (Sep–Nov)"],
+      recommended: "2 nights. Add-on from Hanoi (overnight train or 3.5h drive). Best for adventurous travellers.",
+      bestFor: "Adventure, trekking, photography, ethnic culture" },
+    { name: "Phu Quoc", region: "South Vietnam (Island)", emoji: "🏝️",
+      highlight: "Vietnam's premier beach island — crystal turquoise waters, luxury resorts, seafood markets, Vinpearl Safari. Vietnam's answer to Maldives at a fraction of the cost.",
+      best: "November–April (dry season)", avoid: "May–October (monsoon)",
+      topSights: ["Long Beach sunset", "Sao Beach (whitest sand)", "Vinpearl Grand World", "Phu Quoc Night Market", "Snorkelling An Thoi Islands"],
+      recommended: "3 nights minimum. Best as the final leg of a Vietnam circuit — end on the beach.",
+      bestFor: "Beach, relaxation, honeymoon, island life" }
+  ],
+  cityPairing: [
+    { type: "Honeymoon (7N)", route: "Hanoi (2N) → Ha Long Cruise (1N) → Da Nang/Hoi An (2N) → Phu Quoc (2N)" },
+    { type: "Best of Vietnam (8N)", route: "Hanoi (2N) → Ha Long (1N) → Da Nang (1N) → Hoi An (1N) → Ho Chi Minh City (2N) → Mekong (1N)" },
+    { type: "Short Escape (5N)", route: "Hanoi (2N) → Ha Long Cruise (1N) → Da Nang/Hoi An (2N)" },
+    { type: "Adventure (8N)", route: "Hanoi (1N) → Sapa (2N) → Ha Long (1N) → Da Nang (2N) → Ho Chi Minh City (2N)" },
+    { type: "Beach Focus (6N)", route: "Ho Chi Minh City (2N) → Phu Quoc (4N)" }
+  ],
   whySell: ["Excellent value — premium experience at budget-friendly prices", "Visually dramatic: Ha Long Bay, rice terraces, ancient towns", "Strong Instagram appeal — drives peer referrals", "Easy E-Visa, direct flights from Delhi/Mumbai/Bangalore", "Great for honeymooners, families & groups alike"],
   seasons: { best: [10,11,12,1,2,3,4], good: [5,9], avoid: [6,7,8] },
   budget: {
@@ -821,16 +914,49 @@ thailand: {
   currency: "Thai Baht (THB)", isoCode: "TH",
   visaInfo: "Visa on Arrival available (₹2,000 approx, 15 days). E-Visa also available (30 days). Pre-arranged e-visa recommended for peak season.",
   capital: "Bangkok", flightTime: "3.5–5 hrs from Indian metros",
-  flightCost: '₹14,000–28,000 return pp',
-  flightRoutes: 'IndiGo/AirAsia/Thai Delhi-Mumbai-BLR–Bangkok. Multiple daily.',
-  visaType: 'Visa on Arrival OR e-Visa',
-  visaCost: '~₹4,800 (THB 2,000)',
-  visaProcessing: 'VOA: immediate | e-Visa: 5 days',
-  visaExpress: 'Peak Dec–Jan: use e-Visa to skip 60–90 min VOA queue.',
-  visaValidity: '30 days',
-  visaTip: 'VOA queue 60–90 min in Dec–Jan. Always recommend e-Visa for December travel.',
+  flightCost: '₹40,000 return per person (economy)',
+  flightRoutes: 'IndiGo/AirAsia/Thai Delhi-Mumbai-BLR–Bangkok. Multiple daily. Domestic intercity within Thailand: ~₹11,000 per flight.',
+  visaType: 'No Visa Required for Indian passport holders',
+  visaCost: 'FREE — no visa fee',
+  visaProcessing: 'No visa processing needed',
+  visaExpress: 'N/A — no visa required. Minimum booking: 2 days before travel.',
+  visaValidity: '30 days visa-free',
+  visaTip: 'No visa required for Indians — one of the biggest selling points. Just valid passport + return ticket. Minimum booking lead time: 2 days before travel.',
   languages: "Thai (English widely spoken in tourist zones)",
   overview: `Thailand is India's most booked international destination — and with good reason. A seamless mix of vibrant cities (Bangkok), cultural temples (Chiang Mai), world-class beach islands (Phuket, Koh Samui, Krabi), and jungle adventures. Thai cuisine is globally loved. The country offers a full spectrum from ₹35K budget trips to ₹2L+ luxury island escapes. It's the perfect destination for families, honeymooners, friend groups, and solo travellers. Thailand's infrastructure is mature, English is widely used, and Indian restaurants are abundant.`,
+  cities: [
+    { name: "Bangkok", region: "Central Thailand", emoji: "🏙️",
+      highlight: "Thailand's dazzling capital — Grand Palace, Wat Pho, Chatuchak market, rooftop bars, tuk-tuks, and world-class street food. Cultural anchor of any Thailand trip.",
+      best: "November–February (cool, dry)", avoid: "March–April (very hot), June–October (monsoon)",
+      topSights: ["Grand Palace & Emerald Buddha", "Wat Pho (Reclining Buddha)", "Chatuchak Weekend Market", "Chao Phraya River cruise", "Sky Bar at Lebua", "Floating Market Damnoen Saduak"],
+      recommended: "2–3 nights. Essential starting point for any Thailand trip.",
+      bestFor: "Culture, temples, food, shopping, nightlife" },
+    { name: "Phuket", region: "South Thailand (Andaman)", emoji: "🏖️",
+      highlight: "Thailand's most famous beach island — Patong nightlife, Phi Phi Islands day trip, James Bond Island, Elephant Sanctuary. Buzzing, beautiful, and diverse.",
+      best: "November–April (Andaman dry season)", avoid: "May–October (monsoon — rough sea)",
+      topSights: ["Phi Phi Islands full-day tour", "James Bond Island (Phang Nga Bay)", "Patong Beach & Bangla Road", "Big Buddha Phuket", "Elephant Jungle Sanctuary"],
+      recommended: "3–4 nights. The classic island for first-time Thailand visitors.",
+      bestFor: "Beaches, island hopping, nightlife, water sports" },
+    { name: "Krabi", region: "South Thailand (Andaman)", emoji: "🧗",
+      highlight: "More scenic and less crowded than Phuket — towering limestone cliffs, Railay Beach (only by boat), 4-Islands tour, rock climbing, kayaking through mangroves.",
+      best: "November–April (Andaman dry season)", avoid: "May–October (monsoon)",
+      topSights: ["Railay Beach (only accessible by longtail)", "4-Islands snorkelling tour", "Tiger Cave Temple (1,237 steps)", "Kayaking through mangroves", "Rock climbing limestone cliffs"],
+      recommended: "3–4 nights. Better choice than Phuket for couples and nature lovers.",
+      bestFor: "Scenic beauty, romance, adventure, snorkelling" },
+    { name: "Pattaya", region: "East Thailand (Gulf)", emoji: "🎡",
+      highlight: "Year-round beach destination (Gulf of Thailand — no monsoon like Andaman). Coral Island, Nong Nooch tropical garden, walking street nightlife. Closest beach city to Bangkok (2h drive).",
+      best: "Year-round (Gulf side avoids monsoon)", avoid: "No strong avoid period",
+      topSights: ["Coral Island (Koh Larn) snorkelling", "Nong Nooch Tropical Garden", "Sanctuary of Truth (wooden temple)", "Walking Street nightlife", "Pattaya Floating Market"],
+      recommended: "2–3 nights. Perfect Bangkok add-on or family destination.",
+      bestFor: "Family fun, easy beach access, year-round travel, nightlife" }
+  ],
+  cityPairing: [
+    { type: "Classic (7N)", route: "Bangkok (3N) → Phuket (4N)" },
+    { type: "Honeymoon (8N)", route: "Bangkok (2N) → Krabi (3N) → Koh Samui (3N)" },
+    { type: "Family (7N)", route: "Bangkok (3N) → Pattaya (2N) → Phuket (2N)" },
+    { type: "Short (5N)", route: "Bangkok (2N) → Phuket/Krabi (3N)" },
+    { type: "Beach Only (7N)", route: "Phuket (3N) → Krabi (4N)" }
+  ],
   whySell: ["India's #1 international holiday destination — strong trust & aspiration", "Diverse: cities + islands + mountains in one trip", "Indian-friendly food widely available", "Direct flights from 8+ Indian cities", "Strong repeat-booking destination"],
   seasons: { best: [11,12,1,2,3], good: [4,10], avoid: [5,6,7,8,9] },
   budget: {
@@ -883,14 +1009,14 @@ singapore: {
   currency: "SGD (S$)", isoCode: "SG",
   visaInfo: "Visa required. Singapore Tourist Visa (Single Entry): ₹3,000–5,000 approx. Processing 3–5 days. Embassy in Delhi/Mumbai/Chennai. Visa on Arrival NOT available.",
   capital: "Singapore City", flightTime: "5–6 hrs from Indian metros",
-  flightCost: '₹16,000–32,000 return pp',
-  flightRoutes: 'IndiGo/SQ/Scoot Delhi-Mumbai-Chennai–Singapore. 20+ daily.',
-  visaType: 'Singapore Tourist Visa (required)',
-  visaCost: '~₹1,900 (SGD 30) + agent fee ~₹1,500',
-  visaProcessing: '3–5 working days',
-  visaExpress: 'No official express. Apply 2 weeks minimum ahead.',
+  flightCost: '₹45,000 return per person (economy)',
+  flightRoutes: 'IndiGo/Singapore Airlines/Scoot Delhi-Mumbai-Chennai–Singapore. 20+ daily. Cruises: Standard ₹15,000 pp/night; Disney ₹30,000 pp/night.',
+  visaType: 'Singapore Tourist Visa (required — no embassy visit)',
+  visaCost: 'Included in our package processing',
+  visaProcessing: '1 month processing time. Visa expert assigned to manage all documents.',
+  visaExpress: 'No express — plan 1 month ahead. No embassy visit required. If self-booked visa: minimum 3 days before travel.',
   visaValidity: '30 days single or multiple entry',
-  visaTip: 'High approval for salaried Indians. Freelancers need extra income proof. We handle full application.',
+  visaTip: 'Minimum booking lead time: 35 days before travel if we arrange visa. Visa expert assigned — 100% document support. If client has self-booked visa: 3 days minimum lead time.',
   languages: "English, Mandarin, Malay, Tamil",
   overview: `Singapore is Asia's premium city-state — impossibly clean, ultra-efficient, and endlessly impressive. While compact in size, it punches far above its weight in experiences: the futuristic Gardens by the Bay, world-class Universal Studios, iconic Marina Bay Sands infinity pool, Little India (feels familiar!), Sentosa Island beaches, and Michelin-starred street food at hawker centres. For Indian travellers, Singapore has the comfort of a familiar Indian community while offering a truly world-class experience. It's the perfect first international trip and also works brilliantly combined with Malaysia or Indonesia (Bali).`,
   whySell: ["Extremely safe, clean, efficient — ideal first international trip for families", "Large Indian diaspora — Indian food everywhere, familiar comfort", "Universal Studios and Sentosa attractions for kids", "Can combine seamlessly with Malaysia (JB/KL) or Bali", "Strong aspiration value — 'I've been to Singapore' carries weight"],
@@ -940,14 +1066,14 @@ malaysia: {
   currency: "Malaysian Ringgit (MYR)", isoCode: "MY",
   visaInfo: "Visa-free for Indian passport holders for up to 30 days. No visa required — just valid passport and return ticket. Easiest international destination for Indians.",
   capital: "Kuala Lumpur", flightTime: "4–5.5 hrs from Indian metros",
-  flightCost: '₹13,000–25,000 return pp',
-  flightRoutes: 'AirAsia/IndiGo/MAS Delhi-Mumbai-Chennai–KL. Very competitive.',
-  visaType: 'VISA FREE for Indians',
-  visaCost: 'FREE',
-  visaProcessing: 'Instant at immigration',
-  visaExpress: 'N/A — no visa needed',
+  flightCost: '₹40,000 return per person (economy). If arriving from Singapore: ₹10,000 per person.',
+  flightRoutes: 'AirAsia/IndiGo/Malaysia Airlines Delhi-Mumbai-Chennai–KL.',
+  visaType: 'No Visa Required for Indian passport holders',
+  visaCost: 'FREE — no visa fee',
+  visaProcessing: 'No visa processing needed',
+  visaExpress: 'N/A — no visa required. Minimum booking: 3 days before travel.',
   visaValidity: '30 days visa-free',
-  visaTip: 'Zero visa hassle — just valid passport + return ticket + hotel. Perfect for first-time international travellers.',
+  visaTip: 'No visa required — biggest selling point for first-time international travellers. Minimum booking lead time: 3 days before travel.',
   languages: "Malay, English widely spoken, Tamil understood",
   overview: `Malaysia is India's most visa-friendly international destination — no visa required. Kuala Lumpur impresses with the iconic Petronas Twin Towers, vibrant night markets, and a world-class food scene. Genting Highlands offers cool mountain air and a massive theme park. Penang is a UNESCO-listed food paradise. For beach lovers, Langkawi and the Perhentian Islands offer stunning turquoise waters. Malaysia is also heavily popular with Indian Muslim travellers for its exceptional Halal food standards. Excellent value, easy accessibility, and diverse landscapes make it a consistent bestseller.`,
   whySell: ["No visa required — easiest international trip from India", "Iconic Petronas Towers — bucket-list photo moment", "Excellent Halal food for Muslim travellers", "Cool Genting Highlands — kids & adults both love it", "Can combine with Singapore easily"],
@@ -998,14 +1124,14 @@ bali: {
   currency: "Indonesian Rupiah (IDR)", isoCode: "ID",
   visaInfo: "Visa on Arrival available at Ngurah Rai Airport: USD 35 (approx. ₹2,900) for 30 days. Extendable once. Quick process at airport.",
   capital: "Denpasar (main city)", flightTime: "5–7 hrs from Indian metros (often via Singapore/KL)",
-  flightCost: '₹18,000–38,000 return pp',
-  flightRoutes: 'IndiGo Delhi–Bali direct 3x/week ~5.5h; AirAsia via KL',
-  visaType: 'Visa on Arrival (VoA)',
-  visaCost: '~₹2,900 (USD 35)',
-  visaProcessing: 'On arrival — 10–20 min',
-  visaExpress: 'e-VoA (online pre-purchase USD 35) recommended Jul–Aug and Dec.',
+  flightCost: '₹60,000 return per person (economy)',
+  flightRoutes: 'IndiGo Delhi–Bali direct 3x/week ~5.5h; AirAsia via KL; Singapore Airlines via Singapore.',
+  visaType: 'Visa on Arrival — 100% digital, no embassy visit',
+  visaCost: '~₹2,900 (USD 35) — included in processing',
+  visaProcessing: '3 days to process. Delivered same day once processed.',
+  visaExpress: 'Expedited same-day delivery once 3-day processing completes. No embassy visit.',
   visaValidity: '30 days, extendable once',
-  visaTip: 'Use e-VoA at molina.imigrasi.go.id to skip queue. Check Nyepi date — airport closes 24hrs.',
+  visaTip: '100% digital process — no embassy visit. Processing: 3 days, delivered same day. Minimum booking: 3 days before travel.',
   languages: "Balinese, Indonesian, English in tourist areas",
   overview: `Bali is the world's most Instagrammed destination for a reason — emerald rice terraces, ancient Hindu temples (Uluwatu cliff temple at sunset is breathtaking), pristine beaches across multiple zones, and a spiritual energy that makes it deeply transformative. Unlike Thailand or Singapore, Bali feels authentically spiritual — the Balinese are deeply devout Hindus, and Indian travellers often feel a deep connection. Each area has its own identity: Seminyak (party/beach), Ubud (culture/yoga/rice fields), Uluwatu (surfers/cliffs), Nusa Dua (luxury), Canggu (digital nomads/hip cafes), Lovina (quiet/dolphins).`,
   whySell: ["Strong India-Bali cultural connection (Hinduism)", "World's most Instagrammable destination — drives aspirational demand", "Diverse appeal: romantic, adventure, spiritual, wellness", "Iconic rice terraces + beaches + temples in one island", "Great value once you reach — cheap food, scooters, spas"],
@@ -1057,14 +1183,14 @@ maldives: {
   currency: "US Dollar (USD) + MVR", isoCode: "MV",
   visaInfo: "Visa on Arrival free for all nationalities. 30-day stamp on arrival. No processing needed — easiest entry in the world.",
   capital: "Malé (transit only)", flightTime: "3–4 hrs from Indian metros (to Malé). Then speedboat/seaplane to resort.",
-  flightCost: '₹18,000–40,000 return pp',
-  flightRoutes: 'IndiGo/Air India/Maldivian Delhi-Mumbai-Chennai–Male direct.',
-  visaType: 'Visa on Arrival — FREE',
+  flightCost: '₹45,000 return per person (economy)',
+  flightRoutes: 'IndiGo/Air India/Maldivian Delhi-Mumbai-Chennai–Malé direct. ~3.5h.',
+  visaType: 'No Visa Required — Free on Arrival',
   visaCost: 'FREE',
-  visaProcessing: 'Instant on arrival',
-  visaExpress: 'N/A — instant free entry',
-  visaValidity: '30 days extendable',
-  visaTip: 'Resort transfer (speedboat/seaplane) adds ₹4,000–25,000 pp extra — always clarify to clients.',
+  visaProcessing: 'Instant on arrival. Valid passport mandatory.',
+  visaExpress: 'N/A — instant free entry. No solo bookings accepted — couple/twin sharing only.',
+  visaValidity: '30 days',
+  visaTip: 'No solo bookings — double/couple sharing only. Valid passport required. Resort transfer (speedboat/seaplane) is additional — clarify to clients.',
   languages: "Dhivehi, English in resorts",
   overview: `Maldives is the ultimate luxury overwater escape — and India's #1 premium destination. Overwater villas above turquoise lagoons, breakfast served on your own deck, pristine house reefs for snorkelling at your doorstep, and bioluminescent beaches at night. The key product knowledge: Maldives = atolls + islands, each resort is on its own island, and transfer mode (speedboat vs seaplane) dramatically changes cost. Indian travellers represent the #1 nationality in Maldives by visitor count. Budget-conscious travellers should know that guest house islands (Maafushi, Dhiffushi) offer budget Maldives from ₹45K, while overwater villa resorts (Veligandu, Centara, OBLU) start at ₹1.2L per person.`,
   whySell: ["India's #1 aspirational honeymoon destination", "Complete privacy — your own island, beach, and villa", "One of the world's clearest waters (30m visibility snorkelling)", "Sunrise + sunset from your overwater villa deck", "Strong Instagram value — drives organic referrals"],
@@ -1115,14 +1241,14 @@ dubai: {
   currency: "UAE Dirham (AED)", isoCode: "AE",
   visaInfo: "Tourist Visa required. 30-day single entry: ₹5,000–7,000 approx. Express processing available. Online application. 2–4 day processing. Visa from authorised agents or through Emirates/Air Arabia flight bookings.",
   capital: "Dubai", flightTime: "3–3.5 hrs from all major Indian cities",
-  flightCost: '₹10,000–22,000 return pp',
-  flightRoutes: 'Emirates/IndiGo/Air Arabia/flydubai from 10+ Indian cities.',
+  flightCost: '₹40,000 return per person (economy). +₹10,000 if landing at AUH or Sharjah (one-time).',
+  flightRoutes: 'Emirates/IndiGo/Air Arabia/flydubai from 10+ Indian cities. ~3h flight.',
   visaType: 'UAE Tourist Visa (required)',
-  visaCost: '~₹6,800–8,000 (AED 300–350)',
-  visaProcessing: '2–4 working days',
-  visaExpress: 'Yes — Express 24hr: ~₹11,500+ (AED 500+)',
-  visaValidity: '30 days (60-day and 90-day also available)',
-  visaTip: 'Apply via Emirates, flydubai, or authorised agents. Tourist visa cannot be converted to business visa.',
+  visaCost: 'Included in package (visa arranged by us)',
+  visaProcessing: 'Standard processing — arranged by Alike team.',
+  visaExpress: 'If visa arranged by us: book minimum 10 days before travel. If self-arranged visa: minimum 3 days before travel.',
+  visaValidity: '30 days',
+  visaTip: 'Booking lead time: 10 days minimum if visa is included in package. If client has self-arranged visa: 3 days minimum. ₹10,000 surcharge if flying to AUH or Sharjah instead of DXB.',
   languages: "Arabic (English universally spoken, Hindi widely understood)",
   overview: `Dubai is the world's boldest city — and one of India's top 3 international destinations. Burj Khalifa (world's tallest building), Palm Jumeirah (man-made island), Dubai Mall with 1,200 stores, desert safaris with dune bashing, Dubai Frame, Museum of the Future, Marina Walk, and the Gold Souk. Dubai works for everyone: families (global village, IMG Worlds), couples (luxury dining, yacht charters), shoppers (Dubai Shopping Festival), and business travellers. The food scene is extraordinary — from street shawarma to Nobu. Indian travellers dominate Dubai tourism, making it extremely India-comfortable. Extremely well-organised, safe, and efficient.`,
   whySell: ["India's #2 most booked international destination", "Iconic bucket-list experiences (Burj Khalifa, Palm, Desert Safari)", "Exceptional shopping — gold, electronics, luxury brands at better prices", "Direct flights from almost every Indian city — 3 hrs away", "Dubai Shopping Festival (Jan–Feb) — massive deals"],
@@ -1173,14 +1299,14 @@ abudhabi: {
   currency: "UAE Dirham (AED)", isoCode: "AE",
   visaInfo: "Same UAE Tourist Visa as Dubai (30-day). Apply once, valid for both cities. ₹5,000–7,000 approx. 2–4 day processing.",
   capital: "Abu Dhabi (UAE capital)", flightTime: "3.5 hrs from India (direct Etihad/Air Arabia)",
-  flightCost: '₹11,000–24,000 return pp',
-  flightRoutes: 'Etihad Airways (hub); Air Arabia Abu Dhabi from Delhi/Mumbai/Kochi/Hyderabad.',
-  visaType: 'UAE Tourist Visa (same as Dubai)',
-  visaCost: '~₹6,800–8,000 (AED 300–350)',
-  visaProcessing: '2–4 working days',
-  visaExpress: 'Yes — Express 24hr: ~₹11,500+ (AED 500+)',
-  visaValidity: 'One UAE visa covers Dubai AND Abu Dhabi',
-  visaTip: 'If flying Etihad, apply visa via their website. One UAE visa valid for both Emirates cities.',
+  flightCost: '₹40,000 return per person (economy). +₹10,000 if landing at DXB or Sharjah (one-time).',
+  flightRoutes: 'Etihad Airways hub at Abu Dhabi; Air Arabia from Delhi/Mumbai/Kochi/Hyderabad.',
+  visaType: 'UAE Tourist Visa (same as Dubai — one visa covers both)',
+  visaCost: 'Included in package (visa arranged by us)',
+  visaProcessing: 'Standard processing — arranged by Alike team.',
+  visaExpress: 'If visa arranged by us: book minimum 10 days before travel. If self-arranged visa: minimum 3 days before travel.',
+  visaValidity: '30 days — valid for all UAE (Dubai + Abu Dhabi + Sharjah)',
+  visaTip: 'One UAE visa covers both Abu Dhabi and Dubai. Booking lead time: 10 days if visa included, 3 days if self-arranged. +₹10,000 if flying to DXB or Sharjah instead of AUH.',
   languages: "Arabic (English universally spoken)",
   overview: `Abu Dhabi is the UAE's capital and a study in contrasts — majestic Sheikh Zayed Grand Mosque (world's third largest, free to visit), Ferrari World (world's fastest roller coaster), Warner Bros. World, Yas Waterworld, the Louvre Abu Dhabi, and the stunning Corniche waterfront. It's quieter and more dignified than Dubai — think regal cultural experiences alongside adrenaline thrills. Most packages offer Abu Dhabi as a day trip from Dubai, but a dedicated 2–3 night stay gives a very different and rewarding experience. Recommended especially for culture-focused travellers, F1 Grand Prix fans (Yas Marina Circuit), and families who want waterparks.`,
   whySell: ["Sheikh Zayed Grand Mosque — one of the world's most beautiful buildings", "Ferrari World — world's fastest roller coaster (Formula Rossa)", "Combination with Dubai adds enormous variety to the UAE trip", "Louvre Abu Dhabi — world-class art in stunning architecture", "F1 Abu Dhabi Grand Prix (November) — bucket-list experience"],
@@ -1224,14 +1350,14 @@ japan: {
   currency: "Japanese Yen (JPY)", isoCode: "JP",
   visaInfo: "Tourist Visa required. Japan Embassy visa: ₹600 (fees very low). However, documents required are extensive — bank statements, ITR, leave letter, hotel bookings, full itinerary. Processing: 5–7 business days. Apply minimum 3 weeks before travel.",
   capital: "Tokyo", flightTime: "8–9 hrs from Delhi/Mumbai (direct ANA, JAL, Air India)",
-  flightCost: '₹45,000–90,000 return pp',
+  flightCost: '₹60,000 return per person (economy)',
   flightRoutes: 'Air India Delhi–Tokyo direct ~8.5h; ANA/JAL Delhi-Mumbai–Tokyo.',
-  visaType: 'Japan Tourist Visa (Sticker Visa)',
-  visaCost: '₹600 (consular fee only)',
-  visaProcessing: '5–7 working days',
-  visaExpress: 'No express. Cherry blossom (Mar–Apr): apply from October — queues go 4–6 weeks!',
-  visaValidity: 'Single entry 15/30 days; Multiple entry 5 years (repeat visitors)',
-  visaTip: 'Requires: itinerary, hotel bookings, return ticket, bank statement min ₹1.5L, employment letter, ITR.',
+  visaType: 'Japan Tourist Visa (required)',
+  visaCost: '₹600 (consular fee) + processing support included',
+  visaProcessing: '7 working days. Contact us for full documentation checklist.',
+  visaExpress: 'No express. Plan minimum 3–4 weeks ahead. Cherry blossom season (Mar–Apr): apply in October.',
+  visaValidity: 'Single entry 30 days; Multiple entry 5 years (after prior Japan visit)',
+  visaTip: 'Minimum booking: 21 days before travel (allows visa processing). Requires full documentation package — our team manages this.',
   languages: "Japanese (English limited outside tourist zones — translation apps recommended)",
   overview: `Japan is arguably the most extraordinary country on Earth — and increasingly India's most aspirational long-haul destination. Tokyo is the world's most electrifying city. Kyoto is spiritual and serene with thousand-year-old temples. Mount Fuji is transcendent. Osaka is a food paradise. Hiroshima is profoundly moving. The Shinkansen bullet train is a product experience that wows everyone. Japanese cuisine is the world's best — and the vegetarian options have grown enormously. Japan rewards detail-oriented travellers who appreciate craftsmanship, order, and beauty in everyday objects. The cherry blossom (sakura) season is possibly the most photographed phenomenon on Earth, and Japan's autumn foliage (koyo) rivals it.`,
   whySell: ["Japan is a once-in-a-lifetime destination that generates life-long loyalty to Alike", "Cherry blossom season: most in-demand travel window globally", "Incredibly safe — one of the world's lowest crime rates", "Unique products: Shinkansen, ryokan (traditional inn), onsen (hot spring)", "Indian vegetarian food growing significantly in Japan's major cities"],
@@ -1606,14 +1732,14 @@ andaman: {
   currency: "Indian Rupee (INR)", isoCode: "IN",
   visaInfo: "No visa. Indian nationals travel freely to Andaman. Restricted Area Permit (RAP) needed for Nicobar Islands — not typically part of tourist packages. Note: Foreign nationals need a permit for Andaman (simple process).",
   capital: "Port Blair", flightTime: "2–2.5 hrs from Kolkata/Chennai/Delhi",
-  flightCost: '₹7,000–18,000 return pp',
+  flightCost: '₹30,000 return per person (economy)',
   flightRoutes: 'IndiGo/Air India/SpiceJet Kolkata-Chennai-Delhi–Port Blair. ~2h from Kolkata.',
-  visaType: 'No visa — Union Territory of India',
-  visaCost: 'FREE (no visa)',
-  visaProcessing: 'N/A',
-  visaExpress: 'N/A — domestic',
-  visaValidity: 'N/A — Indian territory',
-  visaTip: 'Inter-island ferries book out fast in peak — always pre-book as part of package. Nicobar Islands restricted.',
+  visaType: 'No visa required — Domestic Union Territory',
+  visaCost: 'FREE',
+  visaProcessing: 'N/A — domestic travel. Aadhaar card mandatory for Indian nationals.',
+  visaExpress: 'N/A — no visa. Aadhaar card required. Minimum booking: 3 days before travel.',
+  visaValidity: 'N/A — domestic travel. Aadhaar card is mandatory identity document.',
+  visaTip: 'Aadhaar card is mandatory for all Indian nationals visiting Andaman. Minimum booking lead time: 3 days before travel. Inter-island ferries book out fast — always pre-book.',
   languages: "Hindi, Bengali, Tamil, Telugu (multi-lingual)",
   overview: `The Andaman Islands are India's secret tropical paradise — and one of Asia's finest diving destinations. Clear turquoise waters with 30m visibility, pristine white sand beaches, rich coral reefs, sea turtles, and dugongs (sea cows). The Cellular Jail in Port Blair is one of India's most poignant historical sites (Kala Pani — colonial-era prison). Havelock Island (Radhanagar Beach — Asia's #3 beach by Time Magazine) is the crown jewel. Neil Island is quieter and more intimate. The Barren Island volcano is India's only active volcano. For water sports lovers, the Andamans offer world-class scuba diving, snorkelling, sea walking, and glass-bottom boats. The islands feel like a distant tropical escape despite being Indian territory.`,
   whySell: ["Asia's best beaches within India — no visa, no international hassle", "World-class snorkelling and diving — 30m visibility", "Radhanagar Beach — regularly voted Asia's best beach", "Havelock Island — a completely different India", "Cellular Jail light and sound show — deeply moving historical experience"],
@@ -1762,14 +1888,14 @@ mauritius: {
   currency: "Mauritian Rupee (MUR)", isoCode: "MU",
   visaInfo: "Visa-free for Indian passport holders for 90 days. No visa required. Just show return ticket and hotel booking.",
   capital: "Port Louis", flightTime: "7–8 hrs from Delhi/Mumbai (Air Mauritius direct, Air India)",
-  flightCost: '₹28,000–55,000 return pp',
-  flightRoutes: 'Air Mauritius/Air India Delhi-Mumbai–Mauritius direct ~7.5h.',
-  visaType: 'VISA FREE for Indian nationals',
+  flightCost: '₹82,000 return per person (economy)',
+  flightRoutes: 'Air Mauritius/Air India Delhi-Mumbai–Mauritius direct ~7.5h. Limited seats — book early.',
+  visaType: 'No Visa Required for Indian passport holders',
   visaCost: 'FREE',
-  visaProcessing: 'Instant on arrival',
-  visaExpress: 'N/A — no visa needed',
-  visaValidity: '90 days visa-free',
-  visaTip: 'Direct flights fill up fast — book 6–8 weeks ahead for Jul–Aug, Dec–Jan peak.',
+  visaProcessing: 'No visa processing needed. Valid passport required.',
+  visaExpress: 'N/A — no visa required. Minimum booking: 3 days before travel.',
+  visaValidity: '90 days visa-free. Valid passport mandatory.',
+  visaTip: 'No visa required — valid passport is sufficient. Direct flights fill fast — book 6–8 weeks ahead. Minimum booking: 3 days before travel.',
   languages: "English, French, Mauritian Creole",
   overview: `Mauritius is the Indian Ocean's most complete luxury island destination — extraordinary white-sand beaches, turquoise lagoons, multicultural cuisine, undersea waterfall optical illusion, swimming with dolphins, and some of the world's most beautiful luxury resorts. Unlike Maldives, Mauritius has a full island to explore — dense sugar cane fields, Black River Gorges rainforest, the colourful Hindu temple of Grand Bassin, Seven Coloured Earths of Chamarel, and the vibrant capital Port Louis. Indian travellers feel deeply at home here — 70% of the population traces Indian ancestry, Hindi is understood, and Indian festivals are national events. The visa-free access is a major advantage.`,
   whySell: ["Indian diaspora island — Indian culture, food, language familiarity", "Visa-free for Indians — complete hassle-free entry", "World's best luxury beach resorts (Shangri-La, Four Seasons, Constance)", "Unique experience: underwater waterfall (optical illusion) + swimming with dolphins", "Better suited for families vs Maldives (full island with activities)"],
@@ -1815,15 +1941,14 @@ srilanka: {
   currency: "Sri Lankan Rupee (LKR)", isoCode: "LK",
   visaInfo: "ETA (Electronic Travel Authorization) online at eta.gov.lk: USD 50 (30 days). Processing: within 24 hours usually. Very straightforward.",
   capital: "Sri Jayawardenepura Kotte (administrative) / Colombo (commercial)", flightTime: "2–3 hrs from major Indian cities",
-  flightCost: '₹12,000–25,000 return pp',
+  flightCost: '₹35,000 return per person (economy)',
   flightRoutes: 'SriLankan Airlines/IndiGo/Air India Delhi-Mumbai-Chennai-BLR–Colombo. Many daily.',
-  visaType: 'ETA (Electronic Travel Authorization)',
-  visaCost: '~₹4,200 (USD 50)',
-  visaProcessing: 'Same day to 24 hours online',
-  visaExpress: 'No express but standard already fast. Apply at eta.gov.lk 2+ days ahead.',
-  visaValidity: '30 days double entry',
-  visaTip: 'Apply at eta.gov.lk. Occasionally free ETA for Indians as tourism promo — check current status.',
-  languages: "Sinhalese, Tamil (English widely spoken in tourist areas)",
+  visaType: 'No Visa Required for Indian passport holders',
+  visaCost: 'FREE',
+  visaProcessing: 'No visa processing needed. Valid passport required.',
+  visaExpress: 'N/A — no visa required. Minimum booking: 3 days before travel.',
+  visaValidity: 'Visa-free. Valid passport mandatory.',
+  visaTip: 'No visa required for Indians — valid passport is sufficient. Minimum booking lead time: 3 days before travel.',  languages: "Sinhalese, Tamil (English widely spoken in tourist areas)",
   overview: `Sri Lanka is India's closest exotic island neighbour — 2 hours from Chennai/Mumbai and just 31 km from Tamil Nadu across the Palk Strait. The diversity packed into this 'tear drop island' is extraordinary: Sigiriya Rock Fortress (one of Asia's 8 wonders), ancient temple city Kandy and the sacred Tooth Relic, world's finest elephant gathering at Minneriya, whale watching in Mirissa, surfing at Arugam Bay, colonial charm of Galle Fort, and the world's most scenic train journey through Sri Lanka's tea highlands. Sri Lanka has fully recovered from its economic crisis and is actively welcoming tourists with a rejuvenated hospitality sector offering exceptional value.`,
   whySell: ["India's closest international island — 2 hrs from Chennai", "World's finest elephant gathering at Minneriya (60–120 elephants together)", "The most scenic train journey in the world (Kandy to Ella)", "Galle Fort — best preserved Dutch colonial fort in Asia", "Excellent value post-economic recovery — strong currency advantage for Indians"],
   seasons: { best: [12,1,2,3,4], good: [5,11], avoid: [6,7,8,9,10] },
@@ -1985,6 +2110,23 @@ window.addEventListener('scroll', () => {
   document.getElementById('scroll-bar').style.width = (scroll / height * 100) + '%';
 });
 
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-label').textContent = isDark ? 'Dark' : 'Light';
+  localStorage.setItem('alike-theme', isDark ? 'light' : 'dark');
+}
+// Restore saved theme
+(function() {
+  const saved = localStorage.getItem('alike-theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    const lbl = document.getElementById('theme-label');
+    if (lbl) lbl.textContent = saved === 'dark' ? 'Light' : 'Dark';
+  }
+})();
+
 function setTrack(t) {
   currentTrack = t;
   document.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
@@ -2012,7 +2154,7 @@ function loadDest(key) {
   document.getElementById('dest-view').style.display = 'block';
   document.documentElement.scrollTop = 0;
 
-  const preTabs  = ['Overview', 'Buyer Profiles', 'Sales Scripts', 'Budget Guide', 'Visa & Flights', 'Competition'];
+  const preTabs  = ['Overview', 'Buyer Profiles', 'Season Guide', 'Budget & Pricing', 'Visa & Flights', 'Competition'];
   const expertTabs = ['Overview', 'Seasonal Guide', 'Itineraries', 'Pricing & Packages', 'Free Time', 'Objections', 'Knowledge Check'];
   const tabs = currentTrack === 'pre' ? preTabs : expertTabs;
 
@@ -2063,6 +2205,357 @@ function showHome() {
 }
 
 // ─── BUYER PROFILE PERSONAS ────────────────────────────────────────────────
+const STANDARD_PACKAGES = {
+  "vietnam": {
+    "double": 12000,
+    "solo": 18000,
+    "flight": 45000,
+    "intercity": true,
+    "intercityCost": 10000,
+    "intercityNote": "per intercity domestic flight within Vietnam",
+    "visaNote": "E-Visa required. Minimum 15 days before travel to begin process. Once applied, 7 working days to process. No embassy visit \u2014 100% digital.",
+    "bookingWithVisa": 15,
+    "bookingWithoutVisa": 2,
+    "minNights": 4,
+    "recommended": "4\u20135 nights (Hanoi + Da Nang)",
+    "noSolo": false
+  },
+  "thailand": {
+    "double": 12000,
+    "solo": 18000,
+    "flight": 40000,
+    "intercity": true,
+    "intercityCost": 11000,
+    "intercityNote": "per intercity domestic flight (e.g. Bangkok\u2013Phuket)",
+    "visaNote": "No visa required for Indian passport holders.",
+    "bookingWithVisa": 2,
+    "bookingWithoutVisa": 2,
+    "minNights": 4,
+    "recommended": "5\u20137 nights",
+    "noSolo": false
+  },
+  "singapore": {
+    "double": 18000,
+    "solo": 24000,
+    "flight": 45000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "cruiseStd": 15000,
+    "cruiseDisney": 30000,
+    "visaNote": "Visa required. Minimum 35 days before travel if visa not self-arranged. Once applied, 1 month processing. No embassy visit \u2014 visa expert assigned to manage documents. If self-booked visa, minimum 3 days before travel.",
+    "bookingWithVisa": 35,
+    "bookingWithoutVisa": 3,
+    "minNights": 4,
+    "recommended": "5\u20136 nights",
+    "noSolo": false
+  },
+  "malaysia": {
+    "double": 10000,
+    "solo": 15000,
+    "flight": 40000,
+    "flightFromSingapore": 10000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "visaNote": "No visa required for Indian passport holders.",
+    "bookingWithVisa": 3,
+    "bookingWithoutVisa": 3,
+    "minNights": 4,
+    "recommended": "5\u20136 nights",
+    "noSolo": false
+  },
+  "bali": {
+    "double": 8000,
+    "solo": 14000,
+    "flight": 60000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "visaNote": "Visa on Arrival. Applied in 3 days \u2014 delivered same day once processed. No embassy visit, all digital.",
+    "bookingWithVisa": 3,
+    "bookingWithoutVisa": 3,
+    "minNights": 5,
+    "recommended": "5\u20137 nights",
+    "noSolo": false
+  },
+  "maldives": {
+    "double": 25000,
+    "solo": null,
+    "flight": 45000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "visaNote": "No visa required. Valid passport mandatory.",
+    "bookingWithVisa": 3,
+    "bookingWithoutVisa": 3,
+    "minNights": 4,
+    "recommended": "4\u20135 nights",
+    "noSolo": true
+  },
+  "srilanka": {
+    "double": 10000,
+    "solo": 15000,
+    "flight": 35000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "visaNote": "No visa required. Valid passport mandatory.",
+    "bookingWithVisa": 3,
+    "bookingWithoutVisa": 3,
+    "minNights": 5,
+    "recommended": "6\u20137 nights",
+    "noSolo": false
+  },
+  "mauritius": {
+    "double": 15000,
+    "solo": 23000,
+    "flight": 82000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "visaNote": "No visa required. Valid passport mandatory.",
+    "bookingWithVisa": 3,
+    "bookingWithoutVisa": 3,
+    "minNights": 5,
+    "recommended": "5\u20137 nights",
+    "noSolo": false
+  },
+  "dubai": {
+    "double": 15000,
+    "solo": 23000,
+    "flight": 40000,
+    "intercity": true,
+    "intercityCost": 10000,
+    "intercityNote": "one-time if landing at AUH/Sharjah instead of DXB",
+    "visaNote": "Visa required. If visa arranged by us: minimum 10 days before travel. If self-arranged visa: minimum 3 days before travel.",
+    "bookingWithVisa": 10,
+    "bookingWithoutVisa": 3,
+    "minNights": 4,
+    "recommended": "5\u20136 nights",
+    "noSolo": false
+  },
+  "abudhabi": {
+    "double": 15000,
+    "solo": 23000,
+    "flight": 40000,
+    "intercity": true,
+    "intercityCost": 10000,
+    "intercityNote": "one-time if landing at DXB/Sharjah instead of AUH",
+    "visaNote": "Visa required (UAE). If visa arranged by us: minimum 10 days before travel. If self-arranged: minimum 3 days before travel.",
+    "bookingWithVisa": 10,
+    "bookingWithoutVisa": 3,
+    "minNights": 3,
+    "recommended": "3\u20134 nights (often combined with Dubai)",
+    "noSolo": false
+  },
+  "andaman": {
+    "double": 12000,
+    "solo": 18000,
+    "flight": 30000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "visaNote": "No visa required \u2014 domestic travel. Aadhaar card mandatory for Indian nationals.",
+    "bookingWithVisa": 3,
+    "bookingWithoutVisa": 3,
+    "minNights": 5,
+    "recommended": "5\u20137 nights",
+    "noSolo": false
+  },
+  "japan": {
+    "double": 35000,
+    "solo": 50000,
+    "flight": 60000,
+    "intercity": false,
+    "intercityCost": 0,
+    "intercityNote": "",
+    "visaNote": "Visa required. Contact us for processing timeline.",
+    "bookingWithVisa": 21,
+    "bookingWithoutVisa": 5,
+    "minNights": 7,
+    "recommended": "7\u201310 nights",
+    "noSolo": false
+  }
+};
+
+
+// ─── PACKAGE CALCULATOR ─────────────────────────────────────────────────────
+function buildCalculator(destKey, trackPrefix) {
+  const sp = STANDARD_PACKAGES[destKey];
+  const d = DESTINATIONS[destKey];
+  const calcId = trackPrefix + '_calc_' + destKey;
+  
+  // Base rates from STANDARD_PACKAGES if available, else from budget tiers
+  let hasStdPkg = !!sp;
+  
+  return `
+    <div style="background:linear-gradient(135deg,rgba(255,107,53,0.06),rgba(255,170,92,0.04));border:1px solid rgba(255,107,53,0.25);border-radius:14px;padding:24px;margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+        <div style="font-size:20px">🧮</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--gold);letter-spacing:0.3px">Land Package Estimator</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:2px">Instant estimate · excludes flights · includes 10% buffer</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+        <div>
+          <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);display:block;margin-bottom:6px">👥 No. of Travellers</label>
+          <select id="${calcId}_pax" onchange="runCalc('${calcId}','${destKey}')"
+            style="width:100%;background:var(--navy-card);border:1px solid var(--border-soft);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer">
+            ${sp && sp.noSolo ? '' : '<option value="1">1 Person (Solo)</option>'}
+            <option value="2" selected>2 People (Couple / Twin)</option>
+            <option value="3">3 People</option>
+            <option value="4">4 People</option>
+            <option value="5">5 People</option>
+            <option value="6">6 People</option>
+            <option value="8">8 People</option>
+            <option value="10">10 People</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);display:block;margin-bottom:6px">🌙 No. of Nights</label>
+          <select id="${calcId}_nights" onchange="runCalc('${calcId}','${destKey}')"
+            style="width:100%;background:var(--navy-card);border:1px solid var(--border-soft);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer">
+            <option value="3">3 Nights</option>
+            <option value="4">4 Nights</option>
+            <option value="5" selected>5 Nights</option>
+            <option value="6">6 Nights</option>
+            <option value="7">7 Nights</option>
+            <option value="8">8 Nights</option>
+            <option value="9">9 Nights</option>
+            <option value="10">10 Nights</option>
+            <option value="12">12 Nights</option>
+            <option value="14">14 Nights</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);display:block;margin-bottom:6px">⭐ Package Type</label>
+          <select id="${calcId}_tier" onchange="runCalc('${calcId}','${destKey}')"
+            style="width:100%;background:var(--navy-card);border:1px solid var(--border-soft);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer">
+            <option value="standard" selected>Standard (Base)</option>
+            <option value="deluxe">Deluxe (+20%)</option>
+            <option value="premium">Premium (+45%)</option>
+            <option value="luxury">Luxury (+100%)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="${calcId}_result" style="background:var(--navy-card);border-radius:10px;padding:16px;border:1px solid var(--border-soft)">
+        <div style="font-size:11px;color:var(--text-dim);text-align:center">Select options above to see estimate</div>
+      </div>
+    </div>
+  `;
+}
+
+function runCalc(calcId, destKey) {
+  const sp = STANDARD_PACKAGES[destKey];
+  const paxEl = document.getElementById(calcId + '_pax');
+  const nightsEl = document.getElementById(calcId + '_nights');
+  const tierEl = document.getElementById(calcId + '_tier');
+  const resultEl = document.getElementById(calcId + '_result');
+  if (!paxEl || !nightsEl || !tierEl || !resultEl) return;
+
+  const pax = parseInt(paxEl.value);
+  const nights = parseInt(nightsEl.value);
+  const tier = tierEl.value;
+
+  let basePerPersonPerNight = 0;
+
+  if (sp) {
+    // Use exact standard package rates
+    const isSolo = (pax === 1);
+    if (isSolo && sp.noSolo) {
+      resultEl.innerHTML = '<div style="color:var(--rose);font-size:13px;text-align:center;padding:8px">⚠️ Solo bookings are not accepted for ' + destKey.charAt(0).toUpperCase() + destKey.slice(1) + '. Minimum 2 travellers required.</div>';
+      return;
+    }
+    const baseRate = (isSolo && sp.solo) ? sp.solo : sp.double;
+    // For 3+ people: use double rate (shared rooms) — odd person may be solo rate
+    // Practical: pairs share, odd one out pays solo rate
+    let landBase;
+    if (pax === 1) {
+      landBase = sp.solo * nights;
+    } else {
+      const pairs = Math.floor(pax / 2);
+      const odd = pax % 2;
+      landBase = (pairs * 2 * sp.double * nights) + (odd * (sp.solo || sp.double * 1.5) * nights);
+    }
+    
+    // Apply tier multiplier
+    const multipliers = { standard: 1.0, deluxe: 1.20, premium: 1.45, luxury: 2.00 };
+    const mult = multipliers[tier] || 1.0;
+    const landTotal = Math.round(landBase * mult);
+    
+    // Per person land cost
+    const perPerson = Math.round(landTotal / pax);
+    
+    // Add flights
+    const flightTotal = sp.flight * pax;
+    
+    // Grand total (land + flights)
+    const grandTotal = landTotal + flightTotal;
+    
+    // 10% buffer range
+    const landLow = landTotal;
+    const landHigh = Math.round(landTotal * 1.10);
+    const grandLow = grandTotal;
+    const grandHigh = Math.round(grandTotal * 1.10);
+    
+    const tierColors = { standard: 'var(--sage)', deluxe: 'var(--sky)', premium: 'var(--gold)', luxury: 'var(--rose)' };
+    const tierNames = { standard: 'Standard', deluxe: 'Deluxe', premium: 'Premium', luxury: 'Luxury' };
+    const color = tierColors[tier];
+    
+    const fmt = (n) => '₹' + n.toLocaleString('en-IN');
+    
+    resultEl.innerHTML = `
+      <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,107,53,0.1);color:var(--gold)">${pax} Pax</span>
+        <span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,107,53,0.1);color:var(--gold)">${nights} Nights</span>
+        <span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,107,53,0.1);color:${color}">${tierNames[tier]}</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="background:var(--navy-light);border-radius:8px;padding:12px;border:1px solid var(--border-soft)">
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">🏨 Land Package (total)</div>
+          <div style="font-size:18px;font-weight:800;color:${color}">${fmt(landLow)}</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:2px">to ${fmt(landHigh)} <span style="color:var(--amber)">(+10% buffer)</span></div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">${fmt(perPerson)} per person</div>
+        </div>
+        <div style="background:var(--navy-light);border-radius:8px;padding:12px;border:1px solid var(--border-soft)">
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px">✈ Flights (all pax)</div>
+          <div style="font-size:18px;font-weight:800;color:var(--teal)">${fmt(flightTotal)}</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:2px">${fmt(sp.flight)} per person return</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">Economy class estimate</div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(255,170,92,0.05));border-radius:8px;padding:14px;border:1px solid rgba(255,107,53,0.2)">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:6px">💰 TOTAL ESTIMATED TRIP COST (Land + Flights)</div>
+        <div style="font-size:28px;font-weight:800;color:var(--gold)">${fmt(grandLow)} <span style="font-size:16px;color:var(--text-dim);font-weight:500">to</span> ${fmt(grandHigh)}</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">For ${pax} traveller${pax>1?'s':''} · ${nights} nights · ${tierNames[tier]} package · includes 10% buffer</div>
+      </div>
+
+      ${sp.intercity ? `<div style="margin-top:10px;font-size:11px;color:var(--amber);background:rgba(255,165,2,0.06);padding:8px 12px;border-radius:6px;border:1px solid rgba(255,165,2,0.15)">⚡ Intercity flights within destination: +${fmt(sp.intercityCost)} per flight per person (${sp.intercityNote})</div>` : ''}
+      <div style="margin-top:8px;font-size:10px;color:var(--text-dim);line-height:1.6">* Estimate only. Actual pricing may vary with hotel availability, season, and add-ons. Visa, travel insurance, meals, and optional activities not included.</div>
+    `;
+  } else {
+    // Fallback: use budget tier labels (no exact calculation possible)
+    const d = DESTINATIONS[destKey];
+    const tierMap = { standard: d.budget.budget, deluxe: d.budget.mid, premium: d.budget.premium, luxury: d.budget.luxury };
+    const tierData = tierMap[tier] || d.budget.mid;
+    resultEl.innerHTML = `
+      <div style="text-align:center;padding:8px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Indicative range for ${pax} pax, ${nights} nights:</div>
+        <div style="font-size:22px;font-weight:700;color:var(--gold)">${tierData.label}</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:4px">per person · ${tierData.nights}</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:8px">Exact rates not available for this destination — contact us for a quote</div>
+      </div>
+    `;
+  }
+}
+
+
 const BUYER_PROFILES = {
   vietnam:     [{icon:'💑',label:'Honeymooners',desc:'Romance + luxury on a budget. Sell Ha Long cruise upgrade and Hoi An boutique stay.',close:'High'},
                 {icon:'👫',label:'Couples (2–10 yrs)',desc:'Annual holiday, first international trip. Cultural + beach combo works well.',close:'High'},
@@ -2152,202 +2645,9 @@ const BUYER_PROFILES = {
                 {icon:'💑',label:'Dream Trip Couples',desc:'NZ+Australia combo. 3-week trip. Premium.',close:'High'}]
 };
 
-// ─── SALES SCRIPTS per destination (key lines) ────────────────────────────
-const SALES_SCRIPTS = {
-  vietnam:    {
-    opening: `"Hi [Name], thanks for enquiring about Vietnam! I'm [Your Name], your Southeast Asia destination specialist at Alike. Before I pull up options — is this a honeymoon, a trip with friends, or a family holiday?"`,
-    budgetLine: `"Vietnam packages start from around ₹35,000 per person for 5 nights — and our most popular mid-range option is ₹60–70K per person, which gets you a lovely 4-star stay and a Ha Long Bay cruise. Most of our customers in that range say it genuinely exceeded their expectations. Are you looking for something like that, or something more premium?"`,
-    emotionalClose: `"Ha Long Bay is one of those places where people tell me — I've seen a hundred photos and nothing prepares you for actually being there. You're on the deck at sunrise, the mist is sitting on the water, and these massive limestone mountains are just rising out of nowhere. It's the kind of memory that just stays with you."`,
-    upsellScript: `"For Ha Long, there are two options. The standard cruise at ₹4,500 per person per night is clean and comfortable. But the premium option at ₹9,000 — you get a private balcony over the water, wine on deck at sunset. For a honeymoon especially, most couples say this was the highlight of the entire trip. The difference is just ₹9,000 total for both of you. Would you like me to include that?"`,
-    closingScript: `"So based on what you've shared, I'd suggest the 7-night circuit — Hanoi, 2 nights on the Ha Long cruise, then Hoi An and Phu Quoc beach at the end. That way you get the culture, the iconic bay, and proper beach time to wind down. November dates look great weather-wise. Can I hold a tentative booking with your preferred dates? I just need a small confirmation to lock in the cruise and hotels."`,
-    upsells: ['Ha Long Bay cruise upgrade: ₹4,500→₹9,000 pp (+₹4,500 per person)', 'Phu Quoc beach extension: +₹8,000–15,000 pp', 'Private transfers vs shared: +₹2,000–4,000', 'Travel insurance: ₹1,500–2,500 pp (always offer)', 'Cooking class Hoi An: +₹1,200 pp']
-  },
-  thailand:   {
-    opening: `"Hi [Name], great to hear from you about Thailand! I'm [Your Name] at Alike. Quick question — is this for a honeymoon, family holiday, or a group of friends? That really shapes the best itinerary for you."`,
-    budgetLine: `"Thailand options start from about ₹35,000 per person for 5 nights — our most popular couple's package is ₹60–70K per person covering Bangkok plus a beautiful island like Koh Samui or Krabi. Most people upgrading to that level say it feels like a completely different trip. Does that range work for you?"`,
-    emotionalClose: `"Phi Phi Islands is one of those places where you look at the water and you can't actually believe it's real — it's this impossibly clear turquoise with these limestone cliffs rising straight up. You're on a longtail boat, the sun is hitting the water, and it genuinely looks like a screensaver. Except it's where you're having lunch."`,
-    upsellScript: `"For the island portion, I can do 3-star beachfront at ₹2,500 per room per night — solid option. Or for ₹1,500 more per night, there's a 5-star property with a private pool directly on the beach. For your trip that's about ₹4,500 more for the two of you total. The pool photos from there are just stunning — would you like me to include that upgrade?"`,
-    closingScript: `"Perfect — so I'm thinking Bangkok 3 nights, then fly to Koh Samui for 4 nights at the 5-star beachfront. Total 7 nights, ₹72K per person including flights. Weather is perfect in November-December. Let me hold this for 48 hours — can I get your travel date preferences?"`,
-    upsells: ['5-star beachfront vs 4-star: +₹1,500 per night', 'Private island tour vs group: +₹3,000 pp', 'Chiang Mai add-on (2N): +₹8,000 pp', 'Travel insurance: ₹1,500–2,500 pp', 'Thai cooking class: +₹1,500 pp']
-  },
-  singapore:  {
-    opening: `"Hi [Name], thanks for reaching out about Singapore! I'm [Your Name] at Alike. Is this for a family trip with kids, or just the two of you? Singapore is honestly brilliant for both but the itinerary looks quite different."`,
-    budgetLine: `"Singapore packages start from ₹55,000 per person — our family pack is ₹72,000 per person which includes Universal Studios and the Night Safari, both of which are honestly unmissable. Families almost always say Universal Studios day was the trip highlight. Does that ballpark work?"`,
-    emotionalClose: `"The Marina Bay Sands infinity pool — that photo where the pool appears to hang over the entire Singapore skyline — is something our guests say is genuinely one of the best moments of their lives. At sunset, with the whole city lit up below you, it's just spectacular. That's an experience that's very hard to replicate."`,
-    upsellScript: `"For hotels, I have two great options. A 4-star near the MRT at ₹6,500 per room — perfect for families. Or Marina Bay Sands itself at ₹18,000 per night — but that includes the iconic infinity pool access and the view is unlike anything. For a couple celebrating something special, the price difference is about ₹25,000 for 2 nights. Worth considering?"`,
-    closingScript: `"So for 5 nights — Universal Studios, Night Safari, Gardens by the Bay, Sentosa — all included. ₹82,000 per person. I can hold dates for 48 hours. Shall I book the Universal Studios timed entry slots? They sell out 3–4 weeks ahead."`,
-    upsells: ['Marina Bay Sands upgrade: +₹11,500 per night', 'Macau 1-day add-on: +₹6,000 pp', 'Universal Studios Express Pass: +₹2,500 pp', 'S.E.A. Aquarium + Adventure Cove combo: +₹3,500 pp', 'Travel insurance: ₹1,500–2,000 pp']
-  },
-  malaysia:   {
-    opening: `"Hi [Name]! Great choice — Malaysia is brilliant and the best part is there's zero visa hassle for Indians. I'm [Your Name] at Alike. Is this mainly KL city + Genting, or are you thinking of adding a beach destination like Langkawi?"`,
-    budgetLine: `"Our KL + Genting 5-night pack is ₹48,000 per person — includes 4-star hotel, Petronas Towers deck entry, and Genting theme park. Most people say Genting alone is worth it for the cool mountain air if nothing else. Is that the kind of range you're looking at?"`,
-    emotionalClose: `"Standing at the base of the Petronas Towers, you just can't help craning your neck up — they're genuinely massive in person and they light up at night in this beautiful golden tone. It's one of those photos every person takes and it honestly never gets old."`,
-    upsellScript: `"I can add Langkawi — 3 nights at a 4-star beach resort — to this package for about ₹20,000 more per person. Langkawi is duty-free, gorgeous beach, and the cable car over the rainforest is spectacular. Malaysia is one of those places where the more you see, the more you want to come back."`,
-    closingScript: `"So KL 3 nights, Genting 2 nights, Langkawi 3 nights — 8-night full Malaysia experience. ₹68,000 per person including flights. No visa to sort — we just need your travel dates to lock in hotels. Shall we do that?"`,
-    upsells: ['Langkawi add-on (3N): +₹20,000 pp', 'Petronas Towers deck entry: ₹1,800 pp', 'Genting theme park bundle: ₹2,500 pp', 'Travel insurance: ₹1,200–2,000 pp']
-  },
-  bali:       {
-    opening: `"Hi [Name]! Bali is such a great choice. I'm [Your Name] at Alike — your Bali specialist. Is this a honeymoon, or more of a relaxed couple's escape? And are you drawn more towards the beach side or the cultural Ubud side?"`,
-    budgetLine: `"Our most popular Bali honeymoon package is ₹75,000–85,000 per person for 6 nights — and that includes a private pool villa, which honestly transforms the experience. People who've stayed in pool villas say they'd never go back to a standard room. Does that kind of range work?"`,
-    emotionalClose: `"The Tegallalang Rice Terraces in the early morning — before the tourists arrive, around 7am — you're standing in this absolute silence, layers and layers of bright green terraces going down into the valley, and there's mist still sitting in the trees. It's one of those moments where you genuinely stop and think: this is why I travel."`,
-    upsellScript: `"For accommodation, I can offer a 4-star hotel at ₹5,000 per night — great option. Or a private pool villa for ₹8,500 per night — you have your own pool, outdoor shower, and full privacy. For a honeymoon, the entire atmosphere changes. That's ₹21,000 more total for 3 nights in the villa. Want me to include that?"`,
-    closingScript: `"So 6 nights — Ubud 3 nights in a pool villa, private driver for the week, Uluwatu sunset, couples massage. Then Seminyak 3 nights beachfront. ₹85,000 per person. I can secure the villa dates — they get booked 6–8 weeks ahead for the good properties. Shall I confirm?"`,
-    upsells: ['Private pool villa vs hotel room: +₹3,500 per night', 'Private driver for week (vs hire per day): saves ₹2,000, better experience', 'Mount Batur sunrise trek: +₹2,500 pp', 'Nusa Penida day snorkelling: +₹3,000 pp', 'Couples spa at Spa Alaya: +₹4,500 pp']
-  },
-  maldives:   {
-    opening: `"Hi [Name]! A Maldives enquiry — lovely! I'm [Your Name] at Alike. Is this for a honeymoon or a special anniversary? And are you leaning towards the overwater villa experience, or a more budget-friendly guesthouse option?"`,
-    budgetLine: `"Our overwater villa package is ₹1,20,000 per person for 5 nights — all-inclusive, speedboat transfer, couples spa included. That's roughly the mid-range for Maldives. For the full luxury seaplane + premium villa, we're looking at ₹2,50,000+ per person. Most honeymooners go with the ₹1.2L option and absolutely love it."`,
-    emotionalClose: `"Imagine waking up and the first thing you see from your bed is the ocean — glass-clear turquoise water, a coral reef 10 metres from your deck. You have your breakfast delivered to your overwater villa. At night, you can see bioluminescent plankton glowing in the water around your jetty. There is genuinely nowhere else on Earth quite like it."`,
-    upsellScript: `"The difference between a beach villa and an overwater villa is about ₹5,000 per night. Over 5 nights that's ₹25,000 for the couple — and you go from a nice beach room to literally living above the ocean. For a once-in-a-lifetime honeymoon, most of our guests say this was the single best decision they made."`,
-    closingScript: `"So 5 nights all-inclusive at Veligandu/OBLU — overwater villa, all meals, speedboat transfer, one couples spa session. ₹1,20,000 per person. The overwater villas for your dates are limited. Shall I hold one?"`,
-    upsells: ['Overwater villa vs beach villa: +₹5,000 per night', 'Seaplane vs speedboat transfer: +₹18,000 pp (one-way)', 'Diving 2 dives: +₹8,000 pp', 'Underwater restaurant dinner: +₹6,000 per couple', 'Travel insurance: ₹2,000–3,000 pp (strongly recommend)']
-  },
-  dubai:      {
-    opening: `"Hi [Name]! Great to hear from you about Dubai. I'm [Your Name] at Alike. Is this a family trip, couple's getaway, or a group? And is it your first time to Dubai or a return visit? That really changes what I'd recommend."`,
-    budgetLine: `"Our Dubai classic is ₹68,000 per person for 5 nights — that covers a 4-star Marina hotel, Burj Khalifa, Desert Safari with BBQ dinner, and a dhow cruise. It's our bestseller. For something more premium like Atlantis or a 5-star, we're looking at ₹1.1L+ per person. Where are you in that range?"`,
-    emotionalClose: `"The Burj Khalifa at sunset — you're on the 124th floor observation deck, 450 metres up, and the entire Dubai skyline just spreads out below you. The desert going off in one direction, the Palm Jumeirah curving into the Gulf in the other. It's genuinely one of those views that makes you feel tiny and amazed at the same time."`,
-    upsellScript: `"For Atlantis — the room rate is about ₹18,000 per night but it comes with full Aquaventure waterpark access included, which for a family with kids is ₹3,000 per person per day saved. Over 2 nights it essentially pays for itself. Want me to see if I can hold rooms there?"`,
-    closingScript: `"So 5 nights — 4-star Marina hotel, Burj Khalifa Deck 124, Desert Safari, Dubai Mall, Abu Dhabi day trip. ₹68,000 per person. Flights are ₹10–15K. I can get the visa sorted in 3 days. What dates are you looking at?"`,
-    upsells: ['Atlantis upgrade: +₹6,000 per night (includes Aquaventure)', 'Abu Dhabi day trip add-on: +₹8,000 pp', 'Private desert safari vs shared: +₹4,000 pp', 'Helicopter city tour: +₹12,000 pp', 'Travel insurance: ₹1,500–2,000 pp']
-  },
-  abudhabi:   {
-    opening: `"Hi [Name]! Are you looking at Abu Dhabi as a standalone trip or combining with Dubai? I'm [Your Name] at Alike — it really shapes the itinerary."`,
-    budgetLine: `"Our Abu Dhabi + Dubai combo is ₹85,000 per person for 6 nights — and that includes Ferrari World, Sheikh Zayed Grand Mosque, and all Dubai highlights. Or if you're coming specifically for the F1, the Grand Prix package is ₹1.2L+ per person for 3 nights."`,
-    emotionalClose: `"Sheikh Zayed Grand Mosque is one of the most breathtakingly beautiful buildings on Earth — I say that genuinely. The white marble, the handwoven carpet (world's largest), the chandeliers, the absolute serenity inside. Most people walk in and fall completely silent. It's the kind of place that changes how you think about architecture."`,
-    upsellScript: `"Adding 2 nights in Abu Dhabi to your Dubai trip is ₹30,000 more per person — you get Ferrari World (world's fastest coaster), Sheikh Zayed Mosque, and Yas Marina F1 circuit. It's genuinely a different experience from Dubai, and most people say Abu Dhabi surprised them more."`,
-    closingScript: `"So Dubai 4 nights + Abu Dhabi 2 nights, ₹85,000 per person all-in. One UAE visa covers both. Shall I hold the dates?"`,
-    upsells: ['Abu Dhabi standalone 2-night add-on: +₹30,000 pp', 'Ferrari World + Warner Bros. combo: +₹4,500 pp', 'F1 Grand Prix ticket (Nov): ₹15,000–60,000 pp', 'Louvre Abu Dhabi: +₹1,500 pp']
-  },
-  japan:      {
-    opening: `"Hi [Name]! Japan — fantastic choice. I'm [Your Name] at Alike. Are you thinking cherry blossom season, or more flexible on dates? And is this the classic Tokyo-Kyoto circuit, or do you want to go deeper — Osaka, Hiroshima, Nara?"`,
-    budgetLine: `"Japan starts from ₹1.1L per person for 7 nights — our most popular 9-night Golden Triangle is ₹1.9L per person. That includes JR Pass, 4-star hotels, and all internal Shinkansen travel. Japan is worth every rupee — most customers say it's the best trip of their lives."`,
-    emotionalClose: `"Kyoto in cherry blossom season — you're walking the Philosopher's Walk, and the entire canal is lined with sakura trees hanging over the path, petals falling into the water. It's like being inside a painting. There is genuinely nowhere else in the world where you see this. It's why people plan trips around it 6 months ahead."`,
-    upsellScript: `"I have a night at a traditional Ryokan in Kyoto — Japanese inn, tatami floors, yukata robe, multi-course kaiseki dinner served in your room at 7pm. It's ₹22,000 for one night but it's possibly the most memorable night of the entire trip for most people. Shall I add it?"`,
-    closingScript: `"9 nights — Tokyo 3N, Kyoto 3N with one Ryokan night, Osaka 2N, Hiroshima day trip — JR Pass included. ₹1.9L per person. I need to start the visa application 3 weeks before — shall we confirm the dates today so I can get that moving?"`,
-    upsells: ['Ryokan night in Kyoto: +₹22,000 pp', 'Cherry blossom season premium (Mar–Apr): +₹15,000 pp', 'Hakone/Mt Fuji add-on: +₹12,000 pp', 'Nara day trip: +₹3,000 pp', 'Travel insurance: ₹3,000–5,000 pp (strongly recommended)']
-  },
-  hongkong:   {
-    opening: `"Hi [Name]! Great timing — Hong Kong has zero visa hassle for Indians. I'm [Your Name] at Alike. Is this mainly for Disneyland with kids, or more of a city + shopping + food trip?"`,
-    budgetLine: `"Our 5-night Hong Kong pack with Disneyland and Ocean Park is ₹88,000 per person. No visa needed, direct flights from most metros. Does that work for your budget?"`,
-    emotionalClose: `"The Peak at night — when Hong Kong's entire skyline is lit up and you're looking down on this incredible density of towers, harbour lights, and the Kowloon side twinkling across. It's genuinely one of the world's great city views. I've had clients say they've been to New York and Tokyo and this still took their breath away."`,
-    upsellScript: `"Harbour Grand Hotel has direct harbour views — you wake up to the skyline every morning. It's ₹4,000 more per room per night than our standard Kowloon option. For 4 nights that's ₹16,000 more for the couple — and honestly those sunrise photos from your room will be your best travel photos."`,
-    closingScript: `"5 nights — Disneyland, Ocean Park, The Peak, Macau day trip. ₹88,000 per person. No visa. Book the Disneyland timed entry now — it sells out 3–4 weeks ahead."`,
-    upsells: ['Harbour view hotel upgrade: +₹4,000 per night', 'Disneyland 2-day pass: +₹3,000 pp', 'Macau day trip: +₹5,000 pp', 'Helicopter tour: +₹12,000 pp']
-  },
-  southkorea: {
-    opening: `"Hi [Name]! Korea — amazing choice. I'm [Your Name] at Alike. Are you inspired by K-Drama or K-Pop, or just love the culture and food? Knowing that helps me build the perfect itinerary — some people have very specific location requests."`,
-    budgetLine: `"Korea starts at ₹1.1L per person for 7 nights — our Seoul + Busan package. Cherry blossom season (April) is about 15% more but absolutely worth it. Does ₹1.1–1.3L range work for you?"`,
-    emotionalClose: `"Gyeongbokgung Palace in a Hanbok — the traditional Korean dress — with cherry blossoms behind you and the palace walls framing the shot. It's that combination of ancient and beautiful that Korea does unlike anywhere else. Every customer who does this says it was their favourite photo of the trip."`,
-    upsellScript: `"I can add Jeju Island — 2 nights — for ₹18,000 more per person. It's Korea's most beautiful island, volcanic beaches, hiking, and a very different vibe from Seoul. Cherry blossom there is incredible in April. Most of our couples who add it say it made the trip."`,
-    closingScript: `"7 nights — Seoul 5 nights, Busan 2 nights by KTX — Gyeongbokgung, DMZ tour, Lotte World, Gamcheon Village. ₹1.15L per person. Visa takes 5–7 days. Shall I start the application today while we lock in the dates?"`,
-    upsells: ['Jeju Island add-on (2N): +₹18,000 pp', 'Hanbok experience rental: +₹1,200 pp', 'DMZ tour: +₹2,500 pp', 'K-drama filming location private tour: +₹4,000 pp', 'Travel insurance: ₹2,000–3,000 pp']
-  },
-  turkey:     {
-    opening: `"Hi [Name]! Turkey is a fantastic choice — one of the best-value long-haul destinations right now. I'm [Your Name] at Alike. Is the Cappadocia hot air balloon on your list? That's usually the starting point for building the perfect Turkey itinerary."`,
-    budgetLine: `"Turkey packages start at ₹65,000 per person for 7 nights. Our most popular — Istanbul, Cappadocia with the balloon, and Pamukkale — is ₹98,000 per person for 8 nights. That includes the balloon flight which honestly is worth the trip alone."`,
-    emotionalClose: `"The hot air balloon in Cappadocia at sunrise — you're floating 300 metres above hundreds of other balloons, and below you are these fairy chimney rock formations in shades of orange and pink in the early light, and the entire valley is perfectly still. Every single customer says it was the most spectacular experience of their life. No hyperbole."`,
-    upsellScript: `"The balloon flight is ₹14,000 per person extra. I know that sounds significant, but 95% of customers who don't include it say they wish they had. It's the one experience in Turkey that is truly unrepeatable. Can I include it?"`,
-    closingScript: `"8 nights — Istanbul 3N, Cappadocia 2N with balloon, Pamukkale 1N, Bodrum 2N. ₹98,000 per person including e-visa (takes 30 minutes). All internal flights included. Shall I hold this?"`,
-    upsells: ['Hot air balloon: +₹14,000 pp (non-negotiable upsell)', 'Cave hotel vs standard hotel in Cappadocia: +₹4,000 per night', 'Turkish hammam private session: +₹3,500 pp', 'Gulet boat Aegean add-on: +₹12,000 pp', 'Bosphorus dinner cruise: +₹3,500 pp']
-  },
-  azerbaijan: {
-    opening: `"Hi [Name]! Azerbaijan is such an exciting choice — very few Indians have been, which makes for amazing stories when you get back. I'm [Your Name] at Alike. Have you seen any of the Bollywood films shot there?"`,
-    budgetLine: `"Azerbaijan 7 nights — Baku, Gabala mountains, and Sheki Silk Road — is ₹85,000 per person. Very strong value for a genuinely unique destination. Does that range work?"`,
-    emotionalClose: `"The Flame Towers at night — these three tower-shaped buildings covered in LED screens showing fire animations, reflected in the Caspian Sea, with the Baku Old City walls lit up in the foreground. It's this incredible collision of ancient and ultra-modern that doesn't exist anywhere else. Many Bollywood film directors have shot here precisely because it looks so cinematic."`,
-    upsellScript: `"The helicopter over Gobustan for the mud volcano panorama is ₹6,000 per person extra. It's a 20-minute flight and gives you a view of Azerbaijan that almost no tourist ever sees. Very few operators even offer this."`,
-    closingScript: `"7 nights — Baku 4N, Gabala 2N, Sheki 1N. ₹85,000 per person. ASAN e-visa is online — ₹2,200, done in 3 days. Shall we lock in dates?"`,
-    upsells: ['Gobustan helicopter panorama: +₹6,000 pp', 'Naftalan oil therapy spa day: +₹4,000 pp', 'Tufandag cable car Gabala: +₹1,500 pp', 'Traditional Sheki dinner: +₹1,200 pp']
-  },
-  kashmir:    {
-    opening: `"Hi [Name]! Kashmir — brilliant. I'm [Your Name] at Alike. Are you thinking summer (flowers + meadows) or the winter snow and skiing experience? Or the spring tulip season in April? Each one is very different."`,
-    budgetLine: `"Kashmir 5 nights starts from ₹25,000 per person — including a deluxe houseboat night on Dal Lake. Our most popular package is ₹38,000 per person, 6 nights, covering Gulmarg gondola and Pahalgam. Great value for the experience."`,
-    emotionalClose: `"Sunrise on Dal Lake from a shikara — the light is gold, the mountains are reflecting in the still water, the houseboats are floating silently, and a boy brings you kahwa tea in a small cup. It costs nothing and it's one of the most peaceful moments you'll ever experience. Kashmir does this to people — it's why they come back every year."`,
-    upsellScript: `"The Khyber Resort in Gulmarg — it's the only 5-star ski resort in India, with heated floors, a fireplace, and Himalayan views from every room. It's ₹12,000 per room per night vs ₹4,500 for our standard option. For a winter honeymoon, it's extraordinary."`,
-    closingScript: `"6 nights — Srinagar 3N including houseboat, Gulmarg 2N, Pahalgam 1N. ₹38,000 per person. Flights from Delhi are ₹6,000 return. Shall I hold the houseboat dates — they go fast for peak season."`,
-    upsells: ['Luxury houseboat vs standard: +₹3,500 per night', 'Khyber Gulmarg 5-star: +₹7,500 per night (winter)', 'Gulmarg Gondola Phase 2: +₹1,600 pp', 'Sonamarg add-on (1N): +₹3,000 pp', 'Horse-drawn sleigh Gulmarg (winter): +₹800 pp']
-  },
-  sikkim:     {
-    opening: `"Hi [Name]! Sikkim is a brilliant choice — very underrated. I'm [Your Name] at Alike. Are you thinking Gangtok and the cultural circuit, or North Sikkim for the high-altitude lakes? Or combining with Darjeeling for the toy train?"`,
-    budgetLine: `"Sikkim + Darjeeling 7 nights is ₹32,000 per person — covering Gurudongmar Lake, Kanchenjunga views, and the Darjeeling toy train. Incredible value for a Himalayan circuit."`,
-    emotionalClose: `"Gurudongmar Lake at 4,300 metres — this vast, perfectly still, high-altitude lake surrounded by snow-covered peaks. The air is thin and cold, it's completely silent, and the water is this impossible shade of blue. Most people say it's the most spiritual place they've ever stood. The lake never fully freezes because of underground thermal springs."`,
-    upsellScript: `"The Elgin Gangtok heritage hotel — it was a maharaja's residence, heritage interiors, and the only place in Gangtok with a full mountain view terrace. It's ₹4,500 more per night. For a 3-night Gangtok stay that's ₹13,500 more — and breakfast on that terrace with Kanchenjunga is quite something."`,
-    closingScript: `"7 nights — Gangtok 3N, North Sikkim 1N, Pelling 2N, Darjeeling 1N. ₹32,000 per person. Flights to Bagdogra, we arrange cab from there. Shall I confirm the North Sikkim permit dates?"`,
-    upsells: ['Elgin Heritage Hotel Gangtok: +₹4,500 per night', 'North Sikkim permit + vehicles: included in package', 'Darjeeling Toy Train joy ride: +₹700 pp', 'Tiger Hill sunrise visit: +₹500 pp']
-  },
-  andaman:    {
-    opening: `"Hi [Name]! Andaman is a great call — genuinely world-class beaches within India. I'm [Your Name] at Alike. Is this mainly for the beach and relaxation, or are water sports — snorkelling, scuba diving — a priority?"`,
-    budgetLine: `"Andaman 6 nights — Port Blair, Havelock, and Neil Island — starts at ₹35,000 per person. Our popular 4-star water sports pack is ₹42,000 per person, includes a scuba discovery dive and sea walking. Clear blue water, pristine beaches — within India."`,
-    emotionalClose: `"Radhanagar Beach at sunset — consistently voted one of Asia's top beaches — the sun is going down behind the forest, the water is this perfect shade of turquoise, and there's almost no one there. It feels like a private island. It was ranked Asia's best beach by Time Magazine, and it's inside India."`,
-    upsellScript: `"The scuba discovery dive — no certification needed — is ₹3,500 per person extra. You're underwater at Elephant Beach with 30-metre visibility, tropical fish, and coral. Most people who've never dived say it's the most otherworldly experience of their life. Very high satisfaction."`,
-    closingScript: `"6 nights — Port Blair 2N, Havelock 3N, Neil 1N — scuba, sea walking, Radhanagar Beach, Cellular Jail sound show. ₹42,000 per person. I need to book the ferries now — they sell out 2–3 weeks ahead in peak season. Shall I confirm?"`,
-    upsells: ['Scuba discovery dive: +₹3,500 pp', 'Sea walking: +₹1,800 pp', 'Barefoot Resort luxury upgrade: +₹4,000 per night', 'Glass bottom boat: +₹800 pp', 'Jet ski Havelock: +₹1,500 pp']
-  },
-  nepal:      {
-    opening: `"Hi [Name]! Nepal — brilliant. I'm [Your Name] at Alike. No visa needed for Indians, by the way — makes it incredibly easy. Are you thinking the cultural Kathmandu + Pokhara circuit, or are you looking at trekking? Everest Base Camp changes the whole planning."`,
-    budgetLine: `"Nepal 7 nights — Kathmandu, Pokhara, and Chitwan — is ₹38,000 per person all-inclusive. Flights are ₹8,000–12,000 return. For an EBC trek package it's ₹1.2–1.8L per person for 14 days. Where are you in that range?"`,
-    emotionalClose: `"Paragliding in Pokhara — you launch from Sarangkot ridge, and within seconds you're soaring above Phewa Lake with Annapurna and Machapuchare snow peaks filling the entire horizon in front of you. It's not just the best paragliding in Asia — it's arguably the most beautiful paragliding view in the world."`,
-    upsellScript: `"The Mountain Flight over Everest — 1 hour in a small plane, you fly along the Himalayan range and at one point Everest is right outside your window, 45 minutes from Kathmandu airport. It's ₹8,500 per person and most people say it's more dramatic than they expected."`,
-    closingScript: `"7 nights — Kathmandu 3N, Pokhara 3N with paragliding, Chitwan 1N. ₹38,000 per person. No visa needed — just bring your passport. Flights are ₹10,000 return. Shall I lock in dates?"`,
-    upsells: ['Everest Mountain Flight: +₹8,500 pp', 'Paragliding 30 min: +₹6,000 pp', 'Dwarika\'s Heritage Hotel Kathmandu: +₹5,000 per night', 'Chitwan jungle jeep safari: +₹2,500 pp', 'EBC Trek upgrade (separate package): ₹80,000–1.5L pp']
-  },
-  bhutan:     {
-    opening: `"Hi [Name]! Bhutan is the most special destination I sell — I say that genuinely. I'm [Your Name] at Alike. Have you been to Bhutan before? And is the Tiger's Nest monastery hike non-negotiable for you? It should be."`,
-    budgetLine: `"Bhutan 6 nights — Paro, Thimphu, and Punakha — is ₹62,000 per person all-inclusive. The SDF (sustainable development fee) is USD 100 per day per person, which is in our pricing. It goes to Bhutan's free healthcare and education."`,
-    emotionalClose: `"Tiger's Nest Monastery — Paro Taktsang — is this ancient monastery that clings to a sheer cliff face at 3,120 metres. You hike up through pine forest for 2 hours, and as you come around the final bend, you see it: this ancient structure hanging impossibly on the rock face with prayer flags and mist and valley below. Most people say they've never felt anything quite like that moment."`,
-    upsellScript: `"Amankora has lodges in 5 different Bhutan valleys — it's possibly the finest resort chain in Asia for cultural immersion. A 5-night Amankora stay across Paro and Punakha is ₹1.8L per person. For travellers who want the absolute finest, there's nothing remotely comparable in the world."`,
-    closingScript: `"6 nights — Paro 2N, Thimphu 2N, Punakha 2N. Tiger's Nest hike, Buddha Dordenma, Punakha Dzong. ₹62,000 per person. Druk Air flights are ₹22,000 return from Kolkata. Shall I confirm the permits?"`,
-    upsells: ['Amankora luxury lodges: upgrade from ₹62K to ₹1.8L pp', 'Extra night Haa Valley (remote): +₹8,000 pp', 'Festival timing (Oct/May): +₹10,000 pp premium', 'Helicopter to remote dzong: +₹15,000 pp']
-  },
-  mauritius:  {
-    opening: `"Hi [Name]! Mauritius — lovely choice. I'm [Your Name] at Alike. Is this a honeymoon, or more of a family holiday? And are you set on a beach resort, or interested in exploring the full island — cultural sites, waterfalls?"`,
-    budgetLine: `"Mauritius 6 nights half-board — 4-star beachfront — is ₹1.25L per person. All meals included. Flights are ₹40,000 return. For a 5-star like Shangri-La or Le Touessrok, we're looking at ₹2L+ per person. Which tier works?"`,
-    emotionalClose: `"Swimming with spinner dolphins off the west coast of Mauritius — in the early morning, the boat takes you out, the dolphins are wild and they swim alongside the boat, and then you slip into the water and they circle you, these beautiful silver dolphins in perfectly clear turquoise water. It's one of those experiences that reminds you why you travel."`,
-    upsellScript: `"The helicopter flight over the underwater waterfall — it's an optical illusion caused by sand currents but it genuinely looks like a waterfall going into the ocean from above. It's ₹8,000 per person for 30 minutes. Every couple I've sent on it says it was the most unique thing they've ever seen."`,
-    closingScript: `"6 nights half-board, catamaran day, Chamarel, dolphin swimming. ₹1.25L per person. Flights are ₹40K return. Book 6–8 weeks ahead — direct flights sell out fast. Shall I hold the resort?"`,
-    upsells: ['Helicopter underwater waterfall: +₹8,000 pp', 'Private catamaran vs shared: +₹5,000 pp', 'Shangri-La / Le Touessrok 5-star: upgrade ₹75K extra pp', 'Diving 2 dives: +₹5,500 pp', 'Travel insurance: ₹2,000–3,000 pp']
-  },
-  srilanka:   {
-    opening: `"Hi [Name]! Sri Lanka is such a brilliant choice right now — incredible value and very underrated. I'm [Your Name] at Alike. Is the scenic train through the tea estates something you're excited about? That one always needs to be planned carefully."`,
-    budgetLine: `"Sri Lanka 7 nights — Sigiriya, Kandy, scenic train to Ella, and Mirissa beach — is ₹72,000 per person. Flights are ₹15,000–20,000 return. The full circuit covers culture + wildlife + beach. Does that range work?"`,
-    emotionalClose: `"The train from Kandy to Ella — you're sitting in an open door of a 1970s train, your feet dangling over the edge, and outside the window the entire hillside is covered in bright green tea estates dropping away into valley mist. It's possibly the most beautiful train journey in the world, and it costs about ₹200."`,
-    upsellScript: `"Uga Jungle Beach in the south — a luxury eco-resort where the jungle literally meets the private beach. It's ₹18,000 per room per night but it's unlike anything else in Sri Lanka. If you're doing whale watching from Mirissa, this is the base. The turtles nest on the beach in front of the resort."`,
-    closingScript: `"7 nights — Colombo 1N, Sigiriya 1N, Minneriya safari, Kandy 2N, scenic train, Ella 1N, Mirissa whale watching 2N. ₹72,000 per person. Train bookings sell out 3 months ahead — shall I secure that first?"`,
-    upsells: ['Uga Jungle Beach luxury: +₹10,000 per night', 'Whale watching: +₹2,500 pp', 'Private Sigiriya sunrise climb: +₹1,500 pp', 'Ayurvedic spa Kandy: +₹3,500 pp', 'Travel insurance: ₹1,500–2,000 pp']
-  },
-  australia:  {
-    opening: `"Hi [Name]! Australia — an amazing trip to plan. I'm [Your Name] at Alike. Is the Great Barrier Reef a must, or are you more focused on Sydney + Melbourne? And do you have any family in Australia we can route around?"`,
-    budgetLine: `"Our East Coast 12-night package — Sydney, Melbourne, Gold Coast, Cairns reef — is ₹2.6L per person all-in including flights and theme parks. For just Sydney + Melbourne it's ₹1.8L per person. The full circuit is genuinely worth the investment if you're making the journey."`,
-    emotionalClose: `"Snorkelling the Great Barrier Reef — you put your face in the water and suddenly you're in this vast, impossibly colourful ecosystem. Coral formations the size of houses, a thousand species of fish, sea turtles drifting past. It's the world's largest living organism and it's genuinely breathtaking in a way photos don't capture."`,
-    upsellScript: `"The BridgeClimb Sydney — you climb to the top of the Harbour Bridge with a guide, 134 metres above the harbour, with the entire city and Opera House below you. It's ₹15,000 per person but it's one of the most iconic experiences in the world. Lots of people don't include it and regret it."`,
-    closingScript: `"12 nights — Sydney 4N, Melbourne 3N, Gold Coast 3N, Cairns 2N. ₹2.6L per person. Visa takes 4–6 weeks. Shall I start the visa documentation process today?"`,
-    upsells: ['Sydney BridgeClimb: +₹15,000 pp', 'Ayers Rock / Uluru 2N: +₹35,000 pp', 'Hamilton Island Qualia resort: +₹40,000 pp per night', 'Private snorkelling charter reef: +₹12,000 pp', 'Travel insurance: ₹4,000–6,000 pp (essential for AU)']
-  },
-  newzealand: {
-    opening: `"Hi [Name]! New Zealand is a dream destination — I'm [Your Name] at Alike. Is Queenstown adventure (bungee jumping, skydiving) a must? And are you combining with Australia? Many people do both together."`,
-    budgetLine: `"New Zealand 12 nights — Auckland, Rotorua, Queenstown, Milford Sound — is ₹3.2L per person. Add Australia for a ₹4.5L 3-week Pacific trip. NZ alone is ₹2.8L per person for 10 nights. It's premium but genuinely extraordinary."`,
-    emotionalClose: `"Milford Sound — you're on a boat in a fiord where the cliffs rise 1,200 metres straight out of the water, waterfalls are crashing down all around you, and there's dolphin pods surfing the bow wake. Rudyard Kipling called it the eighth wonder of the world. I've had clients say Milford Sound alone justified the entire trip."`,
-    upsellScript: `"The Milford Sound overnight cruise — instead of a day trip, you stay on the boat overnight. At night when the day visitors have gone, the sound is completely still, the stars are extraordinary (zero light pollution), and in the morning you have it entirely to yourself. It's ₹18,000 per person extra but the difference is everything."`,
-    closingScript: `"12 nights — Auckland 2N, Rotorua 2N, Hobbiton, Queenstown 4N, Milford Sound 1N, Christchurch 2N, Franz Josef 1N. ₹3.2L per person. NZ visa takes 3–4 weeks. Shall I start the application?"`,
-    upsells: ['Milford Sound overnight cruise: +₹18,000 pp', 'Bungee + skydive combo: +₹25,000 pp', 'Franz Josef glacier heli-hike: +₹18,000 pp', 'Hobbiton private tour: +₹8,000 pp', 'Travel insurance: ₹5,000–8,000 pp (critical for adventure sports)']
-  }
-};
-
-// Generic upsells for destinations not in SALES_SCRIPTS
-function getSalesScript(key, d) {
-  return SALES_SCRIPTS[key] || {
-    opening: `"Hi [Name]! Thanks for enquiring about ${d.name}. I'm [Your Name] at Alike. Before I pull up options — is this for a honeymoon, a family trip, or travelling with friends? That really shapes the best package for you."`,
-    budgetLine: `"${d.name} packages start from around ${d.budget.budget.label} per person for the budget option — and our most popular mid-range is ${d.budget.mid.label} per person, which is what most of our customers go with. Does that ballpark work for you?"`,
-    emotionalClose: `"${d.name} is one of those destinations where every customer comes back and says the photos didn't do it justice — you genuinely have to be there to understand why so many people return. What draws you most to ${d.name}?"`,
-    upsellScript: `"I can upgrade your accommodation to a premium property for a relatively small per-night difference — and for a trip like this, the experience upgrade is significant. Would you like me to show you the comparison?"`,
-    closingScript: `"Based on what you've told me, I'd suggest [itinerary]. I can hold your preferred dates for 48 hours while you confirm — shall I do that?"`,
-    upsells: ['Accommodation upgrade to premium/5-star', 'Travel insurance: ₹1,500–3,000 pp (always recommend)', 'Private transfers vs shared', 'Key signature experience add-on']
-  };
-}
-
 // ─── PRE-SALES RENDER ─────────────────────────────────────────────────────
 function renderPreTabs(d, tabs) {
   const p = d.presales;
-  const s = getSalesScript(currentDest, d);
   const bp = BUYER_PROFILES[currentDest] || [];
   let html = '';
 
@@ -2360,10 +2660,10 @@ function renderPreTabs(d, tabs) {
         <h2 class="section-title">${d.flag} ${d.name} — Pre-Sales Overview</h2>
         <p class="section-subtitle">${d.overview.substring(0, 280)}…</p>
         <div class="cards-3">
-          <div class="info-card">
-            <div class="card-label gold">Avg Cost Per Person</div>
-            <div class="card-value">${d.budget.mid.label}</div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px">mid-range land cost, excl. flights</div>
+          <div class="info-card" style="cursor:pointer;background:rgba(255,107,53,0.06);border-color:rgba(255,107,53,0.25)" onclick="document.querySelectorAll('.dest-tab')[3].click()" title="Open Package Estimator">
+            <div class="card-label gold">🧮 Package Estimator</div>
+            <div style="font-size:18px;font-weight:700;color:var(--gold);margin:6px 0 4px">Open Calculator →</div>
+            <div style="font-size:11px;color:var(--text-dim)">Click to calculate trip cost instantly</div>
           </div>
           <div class="info-card">
             <div class="card-label teal">Common Group Size</div>
@@ -2430,86 +2730,181 @@ function renderPreTabs(d, tabs) {
       `;
     }
 
-    // ── SALES SCRIPTS ──
-    if (tab === 'Sales Scripts') {
+    // ── SEASON GUIDE (Pre-Sales) ──
+    if (tab === 'Season Guide') {
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const s2 = d.seasons;
+      const climateMap = {
+        best:  { label:'BEST',  cls:'sc-best',  desc:'Peak season — ideal weather, popular time' },
+        good:  { label:'GOOD',  cls:'sc-good',  desc:'Shoulder — good weather, fewer crowds' },
+        ok:    { label:'OK',    cls:'sc-ok',    desc:'Manageable — some weather variation' },
+        avoid: { label:'AVOID', cls:'sc-avoid', desc:'Monsoon/extreme heat — not recommended' }
+      };
       html += `
-        <h2 class="section-title">Sales Scripts — ${d.name}</h2>
-        <p class="section-subtitle">Word-for-word. Memorise the opening and budget lines first — they set the entire tone of the call.</p>
-
-        <div style="margin-bottom:24px">
-          <div class="card-label gold" style="margin-bottom:10px">📞 OPENING LINE — INBOUND LEAD</div>
-          <div class="script-block">${s.opening}</div>
-          <div style="font-size:11px;color:var(--text-dim);padding:4px 0 0 2px">→ This immediately segments the lead and builds rapport. Never lead with "how many nights and what's your budget?" — it sounds transactional.</div>
+        <h2 class="section-title">Season Guide — ${d.name}</h2>
+        <p class="section-subtitle">Use this to set accurate date expectations and avoid lost bookings due to weather misalignment.</p>
+        <div style="overflow-x:auto;margin-bottom:20px">
+          <div class="season-row">
+            <div class="season-row-label"></div>
+            ${months.map(m=>`<div class="season-month-label">${m}</div>`).join('')}
+          </div>
+          <div class="season-row">
+            <div class="season-row-label" style="font-size:11px">Season</div>
+            ${months.map((_,idx)=>{
+              const m=idx+1; let cls='sc-ok', lbl='OK';
+              if(s2.best&&s2.best.includes(m)){cls='sc-best';lbl='BEST';}
+              else if(s2.good&&s2.good.includes(m)){cls='sc-good';lbl='GOOD';}
+              else if(s2.avoid&&s2.avoid.includes(m)){cls='sc-avoid';lbl='AVOID';}
+              return `<div class="season-cell ${cls}">${lbl}</div>`;
+            }).join('')}
+          </div>
         </div>
-
-        <div style="margin-bottom:24px">
-          <div class="card-label gold" style="margin-bottom:10px">💰 QUALIFYING BUDGET — WITHOUT ASKING DIRECTLY</div>
-          <div class="script-block">${s.budgetLine}</div>
-          <div style="font-size:11px;color:var(--text-dim);padding:4px 0 0 2px">→ Anchor high and low, then anchor at the middle. Let them self-select without feeling judged.</div>
+        <div class="cards-3" style="margin-bottom:20px">
+          <div class="info-card"><div class="card-label sage">✅ BEST MONTHS</div><div class="card-body mt-16">${(s2.best||[]).map(m=>months[m-1]).join(', ')}<br><span style="font-size:11px;color:var(--text-dim)">Peak season pricing applies</span></div></div>
+          <div class="info-card"><div class="card-label amber">🌤 SHOULDER</div><div class="card-body mt-16">${(s2.good||[]).map(m=>months[m-1]).join(', ') || 'None'}<br><span style="font-size:11px;color:var(--text-dim)">Good option — 10–20% cheaper</span></div></div>
+          <div class="info-card rose-border"><div class="card-label rose">⚠️ AVOID</div><div class="card-body mt-16">${(s2.avoid||[]).map(m=>months[m-1]).join(', ') || 'None'}<br><span style="font-size:11px;color:var(--text-dim)">Monsoon / extreme weather</span></div></div>
         </div>
-
-        <div style="margin-bottom:24px">
-          <div class="card-label" style="color:var(--teal);margin-bottom:10px">🎭 EMOTIONAL CLOSE — PAINT THE PICTURE</div>
-          <div class="script-block teal">${s.emotionalClose}</div>
-          <div style="font-size:11px;color:var(--text-dim);padding:4px 0 0 2px">→ Facts tell, stories sell. Use sensory details — time of day, sounds, what they'll feel. Silence after this often means they're sold.</div>
-        </div>
-
-        <div style="margin-bottom:24px">
-          <div class="card-label amber" style="margin-bottom:10px">⬆️ UPSELL SCRIPT</div>
-          <div class="script-block" style="border-left-color:var(--amber)">${s.upsellScript}</div>
-          <div style="font-size:11px;color:var(--text-dim);padding:4px 0 0 2px">→ Reframe the upgrade cost as marginal relative to total spend. Specific sensory details close.</div>
-        </div>
-
-        <div style="margin-bottom:24px">
-          <div class="card-label sage" style="margin-bottom:10px">✅ CLOSING THE BOOKING</div>
-          <div class="script-block" style="border-left-color:var(--sage)">${s.closingScript}</div>
-          <div style="font-size:11px;color:var(--text-dim);padding:4px 0 0 2px">→ Summarise, recommend, create gentle urgency, ask for micro-commitment.</div>
-        </div>
-
-        <div style="background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.2);border-radius:10px;padding:18px;margin-top:8px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">⬆️ TOP UPSELLS — ${d.name.toUpperCase()}</div>
-          ${s.upsells.map(u=>`<div style="font-size:13px;color:var(--text-muted);padding:6px 0;border-bottom:1px solid var(--border-soft);display:flex;align-items:flex-start;gap:8px"><span style="color:var(--gold);font-size:10px;margin-top:4px">◆</span>${u}</div>`).join('')}
+        ${d.cities ? `
+        <div style="margin-bottom:20px">
+          <div class="card-label gold" style="margin-bottom:14px">📍 CITY-BY-CITY SEASONAL SNAPSHOT</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            ${d.cities.map(city=>`
+              <div style="background:var(--navy-card);border:1px solid var(--border-soft);border-radius:10px;padding:14px">
+                <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:4px">${city.emoji} ${city.name}</div>
+                <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px">${city.region}</div>
+                <div style="font-size:11px;margin-bottom:3px"><span style="color:var(--sage)">✅ Best:</span> <span style="color:var(--text-muted)">${city.best}</span></div>
+                <div style="font-size:11px"><span style="color:var(--rose)">⚠️ Avoid:</span> <span style="color:var(--text-muted)">${city.avoid}</span></div>
+              </div>
+            `).join('')}
+          </div>
+        </div>` : ''}
+        <div class="highlight-box">
+          <div class="hl-title">📌 HANDLING OFF-SEASON REQUESTS</div>
+          <p>When a client wants to travel in an avoid month: <em>"You can still go — and it's 15–20% cheaper in monsoon season. Here's what to expect: [weather]. If you can push by 4–6 weeks to [best month], the experience is significantly better. Which matters more to you — the specific dates or the best experience?"</em></p>
         </div>
       `;
     }
-
-    // ── BUDGET GUIDE ──
-    if (tab === 'Budget Guide') {
+    // ── BUDGET & PRICING ──
+    if (tab === 'Budget & Pricing') {
       const b = d.budget;
+      const sp = STANDARD_PACKAGES[currentDest];
       html += `
-        <h2 class="section-title">Budget Guide — ${d.name}</h2>
-        <p class="section-subtitle">All prices are <strong style="color:var(--gold)">land cost per person (excluding flights)</strong>. Always quote flights separately.</p>
-        <div class="info-card" style="border-color:rgba(255,107,53,0.3);margin-bottom:20px;padding:14px 18px">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold);margin-bottom:5px">✈ ADD RETURN FLIGHTS (economy, per person)</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text)">${d.flightCost}</div>
-        </div>
-        <div class="budget-tiers">
-          <div class="budget-tier"><div class="tier-label budget">BUDGET</div><div class="tier-price budget">${b.budget.label}</div><div class="tier-pax">${b.budget.nights} per person</div><div class="tier-includes">${b.budget.includes}</div></div>
-          <div class="budget-tier"><div class="tier-label mid">MID-RANGE</div><div class="tier-price mid">${b.mid.label}</div><div class="tier-pax">${b.mid.nights} per person</div><div class="tier-includes">${b.mid.includes}</div></div>
-          <div class="budget-tier"><div class="tier-label premium">PREMIUM</div><div class="tier-price premium">${b.premium.label}</div><div class="tier-pax">${b.premium.nights} per person</div><div class="tier-includes">${b.premium.includes}</div></div>
-          <div class="budget-tier"><div class="tier-label luxury">LUXURY</div><div class="tier-price luxury">${b.luxury.label}</div><div class="tier-pax">${b.luxury.nights} per person</div><div class="tier-includes">${b.luxury.includes}</div></div>
-        </div>
-        <div class="highlight-box rose" style="margin-bottom:16px">
-          <div class="hl-title">💬 Budget Upsell Signal</div>
-          <p>If they mention "5★" or "best resort" — skip Budget/Mid entirely. If they say "good hotel, not necessarily luxurious" — start with Mid and offer Premium for ₹X more per person. The incremental jump always feels smaller than the total package difference.</p>
-        </div>
-        <div class="cards-2">
+        <h2 class="section-title">Package Pricing — ${d.name}</h2>
+        <p class="section-subtitle">All land costs are <strong style="color:var(--gold)">per person</strong>. Flights are quoted separately. Always lead with the "Starting From" figure.</p>
+      `;
+      html += buildCalculator(currentDest, 'pre');
+      // Auto-run calc after DOM renders
+      setTimeout(() => runCalc('pre_calc_' + currentDest, currentDest), 50);
+      if (sp) {
+        const std = sp.double;
+        const deluxe = Math.round(std * 1.20);
+        const premium = Math.round(std * 1.45);
+        const luxury = Math.round(std * 2.00);
+        const stdSolo = sp.solo;
+        const deluxeSolo = stdSolo ? Math.round(stdSolo * 1.20) : null;
+        const premiumSolo = stdSolo ? Math.round(stdSolo * 1.45) : null;
+        const luxurySolo = stdSolo ? Math.round(stdSolo * 2.00) : null;
+        html += `
+          <div style="background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.3);border-radius:12px;padding:18px;margin-bottom:20px;text-align:center">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:6px">🏷️ STARTING FROM (double sharing)</div>
+            <div style="font-size:36px;font-weight:800;color:var(--gold)">₹${std.toLocaleString('en-IN')}<span style="font-size:16px;font-weight:500;color:var(--text-dim)">/night/person</span></div>
+            <div style="font-size:13px;color:var(--text-dim);margin-top:4px">+ ₹${sp.flight.toLocaleString('en-IN')} return flight per person</div>
+            ${sp.noSolo ? '<div style="margin-top:8px;font-size:11px;background:rgba(255,71,87,0.1);color:var(--rose);padding:4px 10px;border-radius:4px;display:inline-block">⚠️ Solo bookings not accepted — double/twin sharing only</div>' : ''}
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px">
+            ${[
+              {tier:'Standard', perNight:std, soloPerNight:stdSolo, color:'var(--sage)', pct:'Base rate'},
+              {tier:'Deluxe', perNight:deluxe, soloPerNight:deluxeSolo, color:'var(--sky)', pct:'+20%'},
+              {tier:'Premium', perNight:premium, soloPerNight:premiumSolo, color:'var(--gold)', pct:'+45%'},
+              {tier:'Luxury', perNight:luxury, soloPerNight:luxurySolo, color:'var(--rose)', pct:'+100%'}
+            ].map((t,i)=>`
+              <div style="padding:18px 14px;border-right:${i<3?'1px solid var(--border-soft)':'none'};background:${i===0?'rgba(46,213,115,0.04)':i===3?'rgba(255,71,87,0.04)':'transparent'}">
+                <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${t.color};margin-bottom:4px">${t.tier}</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-bottom:10px">${t.pct}</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-bottom:2px">Double sharing</div>
+                <div style="font-size:20px;font-weight:700;color:${t.color}">₹${t.perNight.toLocaleString('en-IN')}</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-bottom:0">/night/person</div>
+                ${!sp.noSolo && t.soloPerNight ? `
+                <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border-soft)">
+                  <div style="font-size:10px;color:var(--text-dim);margin-bottom:2px">Solo traveller</div>
+                  <div style="font-size:16px;font-weight:700;color:${t.color}">₹${t.soloPerNight.toLocaleString('en-IN')}</div>
+                  <div style="font-size:10px;color:var(--text-dim)">/night/person</div>
+                </div>` : (sp.noSolo ? '<div style="margin-top:10px;font-size:10px;color:var(--rose)">Solo N/A</div>' : '')}
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="info-card" style="border-color:rgba(255,107,53,0.3);margin-bottom:16px">
+            <div class="card-label" style="color:var(--gold)">✈ FLIGHTS + ADDITIONAL COSTS</div>
+            <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Return Flight (per person)</div>
+                <div style="font-size:16px;font-weight:700;color:var(--gold)">₹${sp.flight.toLocaleString('en-IN')}</div>
+              </div>
+              ${sp.intercity ? `<div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Intercity/Domestic Flight</div>
+                <div style="font-size:16px;font-weight:700;color:var(--teal)">₹${sp.intercityCost.toLocaleString('en-IN')}</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:2px">${sp.intercityNote}</div>
+              </div>` : ''}
+              ${currentDest === 'malaysia' ? `<div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Flight from Singapore</div>
+                <div style="font-size:16px;font-weight:700;color:var(--teal)">₹10,000</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:2px">per person (Singapore–KL)</div>
+              </div>` : ''}
+              ${currentDest === 'singapore' ? `<div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Cruise (if required)</div>
+                <div style="font-size:13px;font-weight:600;color:var(--text)">Std: ₹15,000/pp/night</div>
+                <div style="font-size:13px;font-weight:600;color:var(--text)">Disney: ₹30,000/pp/night</div>
+              </div>` : ''}
+            </div>
+          </div>
+
+          <div style="background:var(--navy-card);border:1px solid rgba(255,170,92,0.3);border-radius:10px;padding:16px;margin-bottom:16px">
+            <div class="card-label" style="color:var(--amber);margin-bottom:10px">⏰ BOOKING LEAD TIME</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Visa included in package</div>
+                <div style="font-size:20px;font-weight:700;color:var(--amber)">${sp.bookingWithVisa} days</div>
+                <div style="font-size:10px;color:var(--text-dim)">minimum before travel date</div>
+              </div>
+              <div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Client has own visa</div>
+                <div style="font-size:20px;font-weight:700;color:var(--sage)">${sp.bookingWithoutVisa} days</div>
+                <div style="font-size:10px;color:var(--text-dim)">minimum before travel date</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:var(--text-muted);line-height:1.6">${sp.visaNote}</div>
+          </div>
+        `;
+      } else {
+        // Fallback to generic budget tiers for destinations without STANDARD_PACKAGES
+        html += `
+          <div class="budget-tiers">
+            <div class="budget-tier"><div class="tier-label budget">BUDGET</div><div class="tier-price budget">${b.budget.label}</div><div class="tier-pax">${b.budget.nights} per person</div><div class="tier-includes">${b.budget.includes}</div></div>
+            <div class="budget-tier"><div class="tier-label mid">MID</div><div class="tier-price mid">${b.mid.label}</div><div class="tier-pax">${b.mid.nights} per person</div><div class="tier-includes">${b.mid.includes}</div></div>
+            <div class="budget-tier"><div class="tier-label premium">PREMIUM</div><div class="tier-price premium">${b.premium.label}</div><div class="tier-pax">${b.premium.nights} per person</div><div class="tier-includes">${b.premium.includes}</div></div>
+            <div class="budget-tier"><div class="tier-label luxury">LUXURY</div><div class="tier-price luxury">${b.luxury.label}</div><div class="tier-pax">${b.luxury.nights} per person</div><div class="tier-includes">${b.luxury.includes}</div></div>
+          </div>
+        `;
+      }
+      html += `
+        <div class="cards-2" style="margin-top:16px">
           <div class="info-card teal-border">
             <div class="card-label teal">✓ TYPICALLY INCLUDED</div>
             <ul class="check-list mt-16">
-              ${['Return flights (economy)', 'Hotel accommodation (as per tier)', 'Airport transfers (arrival + departure)', 'Daily breakfast', 'English-speaking guide (tours)', 'Key entry tickets (monuments/attractions)', 'Visa assistance'].map(i=>`<li class="teal">${i}</li>`).join('')}
+              ${['Return flights (economy)','Hotel (as per tier)','Airport transfers','Daily breakfast','English-speaking guide','Key entry tickets','Visa assistance'].map(i=>`<li class="teal">${i}</li>`).join('')}
             </ul>
           </div>
           <div class="info-card rose-border">
-            <div class="card-label rose">✗ TYPICALLY EXCLUDED</div>
+            <div class="card-label rose">✗ NOT INCLUDED</div>
             <ul class="check-list mt-16">
-              ${['Travel insurance (always upsell!)', 'Lunches & dinners (unless specified)', 'Personal expenses & tips', 'Optional activities', 'Alcohol & beverages', 'Camera fees at monuments', 'International roaming'].map(i=>`<li class="rose">${i}</li>`).join('')}
+              ${['Travel insurance (always upsell!)','Lunches & dinners (unless noted)','Personal expenses & tips','Optional activities','Alcohol & beverages','Camera fees','International roaming'].map(i=>`<li class="rose">${i}</li>`).join('')}
             </ul>
           </div>
         </div>
       `;
     }
-
     // ── VISA & FLIGHTS ──
     if (tab === 'Visa & Flights') {
       html += `
@@ -2584,7 +2979,6 @@ function renderPreTabs(d, tabs) {
 
 // ─── EXPERT RENDER ────────────────────────────────────────────────────────
 function renderExpertTabs(d, tabs) {
-  const s = getSalesScript(currentDest, d);
   let html = '';
 
   tabs.forEach((tab, i) => {
@@ -2613,6 +3007,18 @@ function renderExpertTabs(d, tabs) {
             <div style="font-size:12px;color:var(--text-muted);line-height:1.65">${d.visaTip}</div>
           </div>
         </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+          <div style="background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.25);border-radius:10px;padding:14px 18px;cursor:pointer" onclick="document.querySelectorAll('.dest-tab')[3].click()" title="Open Package Estimator">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">🧮 PACKAGE ESTIMATOR</div>
+            <div style="font-size:16px;font-weight:700;color:var(--gold)">Open Calculator →</div>
+            <div style="font-size:10px;color:var(--text-dim);margin-top:3px">Click to calculate trip cost</div>
+          </div>
+          <div style="background:var(--navy-card);border:1px solid var(--border-soft);border-radius:10px;padding:14px 18px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:6px">✈ RETURN FLIGHT</div>
+            <div style="font-size:16px;font-weight:700;color:var(--teal)">${d.flightCost}</div>
+            <div style="font-size:10px;color:var(--text-dim);margin-top:3px">per person, economy</div>
+          </div>
+        </div>
         <div class="divider"></div>
         <div class="card-label gold" style="margin-bottom:14px">WHY CLIENTS BUY ${d.name.toUpperCase()}</div>
         <div class="cards-2">
@@ -2631,10 +3037,29 @@ function renderExpertTabs(d, tabs) {
     if (tab === 'Seasonal Guide') {
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       const s2 = d.seasons;
+      const climateMap = {
+        vietnam:    {best:'Cool & dry 18–28°C. Clear skies. Peak tourist season.',good:'Warm with occasional showers.',avoid:'Hot & humid 32–38°C. Heavy rain daily. Ha Long Bay can be rough.'},
+        thailand:   {best:'Dry & breezy 25–32°C. Andaman coast (Phuket/Krabi) perfect.',good:'Warm, afternoon showers possible.',avoid:'SW Monsoon Jun–Oct. Andaman coast closed. Consider Pattaya/Koh Samui (Gulf coast) instead.'},
+        singapore:  {best:'Warm 26–32°C year-round. Feb–Apr drier. Short tropical showers common.',good:'Brief afternoon showers, warm.',avoid:'Nov–Jan: NE Monsoon, daily heavy rain. Still visitable — all attractions indoor.'},
+        malaysia:   {best:'Dry season West coast 27–33°C. Langkawi & Penang beautiful.',good:'Warm, some showers.',avoid:'Oct–Nov: NE Monsoon on East Coast (Perhentian). West coast (KL, Langkawi) stays fine.'},
+        bali:       {best:'Dry season Apr–Oct 26–31°C. Clear sky, calm sea, lush green.',good:'Mar/Nov: transition, brief showers.',avoid:'Dec–Mar: heavy monsoon rain, muddy rice fields, rough seas. Surf is good though.'},
+        maldives:   {best:'Dry NE Monsoon Nov–Apr. 29–31°C. Best visibility. Whale sharks.',good:'Oct/May transition.',avoid:'SW Monsoon May–Oct. Daily rain, rough seas, reduced visibility. Guesthouses cheaper though.'},
+        dubai:      {best:'Oct–Apr: warm 22–30°C. Sunny, outdoor activities perfect. Festival season.',good:'Oct/May: 30–38°C, manageable.',avoid:'Jun–Sep: 40–48°C outdoors. Extreme heat. All attractions/malls air-conditioned. Budget season.'},
+        japan:      {best:'Mar–Apr: Cherry blossoms 10–18°C. Oct–Nov: Autumn foliage 12–20°C. Magical.',good:'Dec–Feb: cold 2–10°C. Winter illuminations.',avoid:'Jun–Jul: Tsuyu rainy season. Aug: hot & humid 30–35°C in cities.'},
+        srilanka:   {best:'Dec–Apr: West/South coast dry, 27–32°C. Whale watching (Jan–Apr).',good:'Oct–Nov: transition.',avoid:'May–Sep: SW Monsoon hits West/South coast. East coast (Trincomalee, Arugam Bay) excellent during this period.'},
+        mauritius:  {best:'May–Dec: 22–28°C. Dry, trade winds, perfect sea conditions.',good:'Apr transition.',avoid:'Jan–Mar: cyclone season. Hot 30°C+. Some cyclone risk, heavy rain.'},
+        andaman:    {best:'Oct–May: 25–30°C. Calm seas. 20–30m visibility. Ferry services fully running.',good:'Sep–Oct transition.',avoid:'May–Sep: SW Monsoon. Very rough seas. Most inter-island ferries suspended. Water sports cancelled.'},
+        nepal:      {best:'Oct–Nov: crystal clear mountain views, moderate 15–25°C valleys. Mar–May: mild, rhododendrons.',good:'Dec–Feb: cold high altitude, clear summit views.',avoid:'Jun–Sep: Monsoon. Trekking trails slippery, landslide risk, leeches on lower trails.'},
+        kashmir:    {best:'Apr–Jun: flowers, meadows, 15–25°C. Dec–Feb: snow season (skiing Gulmarg).',good:'Sep–Oct: clear skies, crisp air, autumn chinar trees turning red.',avoid:'Jul–Aug: valley heat and heavy monsoon rain. Roads can be blocked.'},
+        turkey:     {best:'Apr–Jun, Sep–Nov: 18–26°C. Perfect for Istanbul, Cappadocia & Pamukkale.',good:'Mar/Dec: 10–15°C cooler, still workable.',avoid:'Jul–Aug: Cappadocia 35–40°C. Very hot. Balloon flights still run but early morning only.'},
+        australia:  {best:'Sep–Nov (spring), Mar–May (autumn): 18–25°C. Perfect across states.',good:'Dec–Feb: Great Barrier Reef best. North coast hot 30°C+.',avoid:'Jun–Aug: Melbourne/Sydney cold (8–15°C). Fine for city/indoor. Reef visibility excellent.'},
+        newzealand: {best:'Dec–Feb: NZ summer 20–28°C. Milford Sound & Queenstown perfect.',good:'Sep–Nov, Mar–May: mild.',avoid:'Jun–Aug: NZ winter. South Island very cold. BUT Queenstown skiing is world-class — sell as winter sports trip.'}
+      };
+      const cd = climateMap[currentDest] || {best:'Pleasant, clear weather.',good:'Manageable with some variation.',avoid:'Monsoon or extreme temperatures.'};
       html += `
-        <h2 class="section-title">When to Go — Seasonal Guide</h2>
-        <p class="section-subtitle">Understanding seasonality means you never lose a booking to misaligned dates.</p>
-        <div style="overflow-x:auto;margin-bottom:28px">
+        <h2 class="section-title">Seasonal Guide & Climate — ${d.name}</h2>
+        <p class="section-subtitle">Know what the weather actually feels like — not just "best" or "avoid". This is what makes a great destination consultant.</p>
+        <div style="overflow-x:auto;margin-bottom:20px">
           <div class="season-row">
             <div class="season-row-label"></div>
             ${months.map(m=>`<div class="season-month-label">${m}</div>`).join('')}
@@ -2642,106 +3067,206 @@ function renderExpertTabs(d, tabs) {
           <div class="season-row">
             <div class="season-row-label" style="font-size:11px">Season</div>
             ${months.map((_,idx)=>{
-              const m=idx+1; let cls='sc-ok';
-              if(s2.best&&s2.best.includes(m))cls='sc-best';
-              else if(s2.good&&s2.good.includes(m))cls='sc-good';
-              else if(s2.avoid&&s2.avoid.includes(m))cls='sc-avoid';
-              return`<div class="season-cell ${cls}">${cls==='sc-best'?'BEST':cls==='sc-good'?'GOOD':cls==='sc-avoid'?'AVOID':'OK'}</div>`;
+              const m=idx+1; let cls='sc-ok', lbl='OK';
+              if(s2.best&&s2.best.includes(m)){cls='sc-best';lbl='BEST';}
+              else if(s2.good&&s2.good.includes(m)){cls='sc-good';lbl='GOOD';}
+              else if(s2.avoid&&s2.avoid.includes(m)){cls='sc-avoid';lbl='AVOID';}
+              return `<div class="season-cell ${cls}">${lbl}</div>`;
             }).join('')}
           </div>
         </div>
-        <div class="cards-3">
-          <div class="info-card"><div class="card-label sage">BEST MONTHS</div><div class="card-body">${(s2.best||[]).map(m=>months[m-1]).join(', ')}</div></div>
-          <div class="info-card"><div class="card-label amber">OK / SHOULDER</div><div class="card-body">${(s2.good||[]).map(m=>months[m-1]).join(', ') || 'None'}</div></div>
-          <div class="info-card rose-border"><div class="card-label rose">AVOID</div><div class="card-body">${(s2.avoid||[]).map(m=>months[m-1]).join(', ') || 'None'}</div></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+          <div style="background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:10px;padding:14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:6px">✅ BEST — ${(s2.best||[]).map(m=>months[m-1]).join(', ')}</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.65">${cd.best}</div>
+          </div>
+          <div style="background:rgba(255,165,2,0.06);border:1px solid rgba(255,165,2,0.2);border-radius:10px;padding:14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:6px">🌤 SHOULDER — ${(s2.good||[]).map(m=>months[m-1]).join(', ')||'N/A'}</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.65">${cd.good}</div>
+          </div>
+          <div style="background:rgba(255,71,87,0.06);border:1px solid rgba(255,71,87,0.2);border-radius:10px;padding:14px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose);margin-bottom:6px">⚠️ AVOID — ${(s2.avoid||[]).map(m=>months[m-1]).join(', ')||'N/A'}</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.65">${cd.avoid}</div>
+          </div>
         </div>
+        ${d.cities ? `
+        <div style="margin-bottom:20px">
+          <div class="card-label gold" style="margin-bottom:14px">📍 CITY GUIDE — Know Each City Cold</div>
+          ${d.cities.map(city=>`
+            <div style="background:var(--navy-card);border:1px solid var(--border-soft);border-radius:10px;padding:16px;margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+                <div>
+                  <span style="font-size:16px;font-weight:700;color:var(--gold)">${city.emoji} ${city.name}</span>
+                  <span style="font-size:11px;color:var(--text-dim);margin-left:10px">${city.region}</span>
+                </div>
+                <div style="font-size:11px;color:var(--text-dim)">${city.bestFor}</div>
+              </div>
+              <div style="font-size:13px;color:var(--text-muted);line-height:1.65;margin-bottom:10px">${city.highlight}</div>
+              <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px">
+                <div><span style="font-size:10px;color:var(--sage)">✅ Best: </span><span style="font-size:11px;color:var(--text-muted)">${city.best}</span></div>
+                <div><span style="font-size:10px;color:var(--rose)">⚠️ Avoid: </span><span style="font-size:11px;color:var(--text-muted)">${city.avoid}</span></div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+                ${city.topSights.map(s=>`<span style="font-size:11px;background:var(--navy-light);color:var(--text-muted);padding:3px 8px;border-radius:4px;border:1px solid var(--border-soft)">${s}</span>`).join('')}
+              </div>
+              <div style="font-size:11px;color:var(--teal);font-style:italic;padding-top:8px;border-top:1px solid var(--border-soft)">${city.recommended}</div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+        ${d.cityPairing ? `
+        <div style="margin-bottom:20px">
+          <div class="card-label gold" style="margin-bottom:12px">🗺️ QUICK ITINERARY PAIRING GUIDE</div>
+          ${d.cityPairing.map(pair=>`
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border-soft)">
+              <div style="min-width:160px;font-size:11px;font-weight:600;color:var(--gold);flex-shrink:0">${pair.type}</div>
+              <div style="font-size:12px;color:var(--text-muted)">${pair.route}</div>
+            </div>
+          `).join('')}
+        </div>` : ''}
         <div class="highlight-box" style="margin-bottom:0">
           <div class="hl-title">📌 Selling Around Bad Seasons</div>
-          <p>When a client wants to travel in a shoulder or avoid month — don't lose the sale. Say: <em>"You can still go and it'll be 15–20% cheaper. Here's what to expect weather-wise. Alternatively, pushing 4–6 weeks to [best month] makes a significant difference in experience. Which matters more — the dates or the experience?"</em> This builds trust and often converts to a better booking.</p>
+          <p>Never lose a booking to weather concerns. Script: <em>"The monsoon months are actually 15–20% cheaper and less crowded. Core experiences are still excellent. If we can shift dates 4–6 weeks to [best month], the difference is significant. Which matters more — the specific dates or the best possible experience?"</em></p>
         </div>
       `;
     }
-
-    // ── ITINERARIES ──
     if (tab === 'Itineraries') {
       html += `
         <h2 class="section-title">Ready-to-Sell Itineraries — ${d.name}</h2>
         <p class="section-subtitle">Know these inside-out before your first call. Customers want confidence, not "let me check."</p>
-        ${d.packages.map((pkg, pi) => `
-          <div class="package-card" style="margin-bottom:20px">
-            <div class="package-header">
-              <div>
-                <div class="package-name">${pkg.name}</div>
-                <div style="font-size:12px;color:var(--text-dim);margin-top:3px">📍 ${pkg.cities}</div>
-              </div>
-              <span class="package-source">${pkg.source}</span>
-            </div>
-            <div class="package-body">
-              <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px">
-                <div><div class="package-nights">${pkg.nights}</div></div>
-                <div>
-                  <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">STARTING FROM</div>
-                  <div class="package-price" style="margin:0">Land cost <strong>${pkg.price}</strong></div>
-                  <div style="font-size:11px;color:var(--text-dim);margin-top:2px">+ flights ~${d.flightCost} per person</div>
-                </div>
-              </div>
-              <div class="package-includes" style="margin-bottom:14px">
-                ${pkg.includes.map(inc=>`<span class="incl-badge">✓ ${inc}</span>`).join('')}
-              </div>
-              <div style="margin-top:12px">
-                <div class="card-label teal" style="margin-bottom:8px">DAY-BY-DAY ITINERARY</div>
-                <div class="package-itinerary" style="white-space:pre-line">${pkg.itinerary}</div>
-              </div>
-            </div>
-          </div>
-        `).join('')}
-        <div style="background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.2);border-radius:10px;padding:16px 20px;margin-top:8px">
-          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px">⬆️ UPSELL STRATEGY — ${d.name.toUpperCase()}</div>
-          <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px">Standard ${d.name} margins run 12–18%. Your best upsells:</p>
-          ${s.upsells.map(u=>`<div style="font-size:13px;color:var(--text-muted);padding:6px 0;border-bottom:1px solid var(--border-soft);display:flex;gap:8px"><span style="color:var(--gold);font-size:10px;margin-top:4px">◆</span>${u}</div>`).join('')}
-          <div style="margin-top:12px;padding-top:10px;font-size:12px;color:var(--text-dim);font-style:italic">Each upsell also increases your absolute margin percentage — always present them framed as "experience upgrade" not "additional cost."</div>
-        </div>
       `;
+      d.packages.forEach(function(pkg) {
+        html += '<div class="package-card" style="margin-bottom:20px">' +
+          '<div class="package-header">' +
+            '<div>' +
+              '<div class="package-name">' + pkg.name + '</div>' +
+              '<div style="font-size:12px;color:var(--text-dim);margin-top:3px">📍 ' + pkg.cities + '</div>' +
+            '</div>' +
+            '<span class="package-source">' + pkg.source + '</span>' +
+          '</div>' +
+          '<div class="package-body">' +
+            '<div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px">' +
+              '<div><div class="package-nights">' + pkg.nights + '</div></div>' +
+              '<div>' +
+                '<div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">STARTING FROM</div>' +
+                '<div class="package-price" style="margin:0">Land cost <strong>' + pkg.price + '</strong></div>' +
+                '<div style="font-size:11px;color:var(--text-dim);margin-top:2px">+ flights ~' + d.flightCost + ' per person</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="package-includes" style="margin-bottom:14px">' +
+              pkg.includes.map(function(inc){ return '<span class="incl-badge">✓ ' + inc + '</span>'; }).join('') +
+            '</div>' +
+            '<div style="margin-top:12px">' +
+              '<div class="card-label teal" style="margin-bottom:8px">DAY-BY-DAY ITINERARY</div>' +
+              '<div class="package-itinerary" style="white-space:pre-line">' + pkg.itinerary + '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      });
     }
 
     // ── PRICING & PACKAGES ──
     if (tab === 'Pricing & Packages') {
       const b = d.budget;
+      const sp = STANDARD_PACKAGES[currentDest];
       html += `
-        <h2 class="section-title">Pricing & Budget Tiers — ${d.name}</h2>
-        <p class="section-subtitle">All pricing is <strong style="color:var(--gold)">land cost only per person</strong>. Add flights separately to get total trip cost.</p>
-        <div class="info-card" style="border-color:rgba(255,107,53,0.3);margin-bottom:20px;padding:14px 18px">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--gold);margin-bottom:5px">✈ APPROX RETURN FLIGHTS (economy, per person)</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text)">${d.flightCost}</div>
-          <div style="font-size:11px;color:var(--text-dim);margin-top:3px">${d.flightRoutes}</div>
-        </div>
-        <div class="budget-tiers" style="margin-bottom:24px">
-          <div class="budget-tier"><div class="tier-label budget">BUDGET</div><div class="tier-price budget">${b.budget.label}</div><div class="tier-pax">${b.budget.nights} · per person</div><div class="tier-includes">${b.budget.includes}</div></div>
-          <div class="budget-tier"><div class="tier-label mid">MID-RANGE</div><div class="tier-price mid">${b.mid.label}</div><div class="tier-pax">${b.mid.nights} · per person</div><div class="tier-includes">${b.mid.includes}</div></div>
-          <div class="budget-tier"><div class="tier-label premium">PREMIUM</div><div class="tier-price premium">${b.premium.label}</div><div class="tier-pax">${b.premium.nights} · per person</div><div class="tier-includes">${b.premium.includes}</div></div>
-          <div class="budget-tier"><div class="tier-label luxury">LUXURY</div><div class="tier-price luxury">${b.luxury.label}</div><div class="tier-pax">${b.luxury.nights} · per person</div><div class="tier-includes">${b.luxury.includes}</div></div>
-        </div>
-        <div class="cards-2" style="margin-bottom:16px">
-          <div class="info-card teal-border">
-            <div class="card-label teal">✓ TYPICALLY INCLUDED</div>
-            <ul class="check-list mt-16">
-              ${['Return flights (economy)','Hotel accommodation (tier)','Airport transfers','Daily breakfast','English-speaking guide','Entry tickets (monuments/attractions)','Visa assistance'].map(i=>`<li class="teal">${i}</li>`).join('')}
-            </ul>
+        <h2 class="section-title">Pricing & Packages — ${d.name}</h2>
+        <p class="section-subtitle">Land cost per person. Always show "Starting From" first — then build up based on client needs.</p>
+      `;
+      html += buildCalculator(currentDest, 'exp');
+      // Auto-run calc after DOM renders
+      setTimeout(() => runCalc('exp_calc_' + currentDest, currentDest), 50);
+      if (sp) {
+        const std = sp.double;
+        const deluxe = Math.round(std * 1.20);
+        const premium = Math.round(std * 1.45);
+        const luxury = Math.round(std * 2.00);
+        const stdSolo = sp.solo;
+        const deluxeSolo = stdSolo ? Math.round(stdSolo * 1.20) : null;
+        const premiumSolo = stdSolo ? Math.round(stdSolo * 1.45) : null;
+        const luxurySolo = stdSolo ? Math.round(stdSolo * 2.00) : null;
+        html += `
+          <div style="background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.3);border-radius:12px;padding:18px;margin-bottom:20px;text-align:center">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:6px">🏷️ STARTING FROM — LAND PACKAGE (double sharing)</div>
+            <div style="font-size:40px;font-weight:800;color:var(--gold)">₹${std.toLocaleString('en-IN')}<span style="font-size:16px;font-weight:500;color:var(--text-dim)">/night/person</span></div>
+            <div style="font-size:13px;color:var(--text-dim);margin-top:4px">+ ₹${sp.flight.toLocaleString('en-IN')} return flight per person &nbsp;|&nbsp; Recommended: ${sp.recommended}</div>
+            ${sp.noSolo ? '<div style="margin-top:8px;font-size:11px;background:rgba(255,71,87,0.1);color:var(--rose);padding:4px 12px;border-radius:4px;display:inline-block">⚠️ Solo bookings not accepted — double/twin sharing only</div>' : ''}
           </div>
-          <div class="info-card rose-border">
-            <div class="card-label rose">✗ TYPICALLY EXCLUDED</div>
-            <ul class="check-list mt-16">
-              ${['Travel insurance (upsell!)', 'Lunches & dinners (unless specified)', 'Personal expenses & tips', 'Optional activities', 'Alcohol & beverages', 'Camera fees', 'International roaming'].map(i=>`<li class="rose">${i}</li>`).join('')}
-            </ul>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px">
+            ${[
+              {tier:'Standard', perNight:std, soloPerNight:stdSolo, color:'var(--sage)', pct:'Base rate', desc:'3★ hotels, breakfast, shared transfers, standard experiences'},
+              {tier:'Deluxe', perNight:deluxe, soloPerNight:deluxeSolo, color:'var(--sky)', pct:'+20%', desc:'4★ hotels, private transfers, guided tours, key inclusions'},
+              {tier:'Premium', perNight:premium, soloPerNight:premiumSolo, color:'var(--gold)', pct:'+45%', desc:'4★–5★ hotels, full-board, private guide, signature experiences'},
+              {tier:'Luxury', perNight:luxury, soloPerNight:luxurySolo, color:'var(--rose)', pct:'+100%', desc:'5★ properties, butler, bespoke itinerary, all inclusive'}
+            ].map((t,i)=>`
+              <div style="padding:18px 14px;border-right:${i<3?'1px solid var(--border-soft)':'none'};background:${i===0?'rgba(46,213,115,0.04)':i===3?'rgba(255,71,87,0.04)':'transparent'}">
+                <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:${t.color};margin-bottom:2px">${t.tier}</div>
+                <div style="font-size:9px;color:var(--text-dim);margin-bottom:10px">${t.pct}</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-bottom:2px">Double sharing</div>
+                <div style="font-size:22px;font-weight:700;color:${t.color}">₹${t.perNight.toLocaleString('en-IN')}</div>
+                <div style="font-size:9px;color:var(--text-dim);margin-bottom:8px">/night/person</div>
+                ${!sp.noSolo && t.soloPerNight ? `
+                <div style="padding-top:8px;border-top:1px solid var(--border-soft)">
+                  <div style="font-size:9px;color:var(--text-dim);margin-bottom:2px">Solo traveller</div>
+                  <div style="font-size:16px;font-weight:700;color:${t.color}">₹${t.soloPerNight.toLocaleString('en-IN')}</div>
+                  <div style="font-size:9px;color:var(--text-dim)">/night/person</div>
+                </div>` : (sp.noSolo ? '<div style="font-size:9px;color:var(--rose);margin-top:8px">Solo N/A</div>':'')}
+                <div style="margin-top:10px;font-size:10px;color:var(--text-dim);line-height:1.5">${t.desc}</div>
+              </div>
+            `).join('')}
           </div>
-        </div>
-        <div class="highlight-box sage">
-          <div class="hl-title">💡 Pro Tip — Anchoring Upward</div>
-          <p>Always present Mid-Range first. Then say: "For ₹X more per person — that's ₹[X×pax] for your group — you get [key upgrade]. Most of our customers who compare say the extra spend is worth it." This works 40–60% of the time and significantly increases the deal value and your margin.</p>
+
+          <div class="info-card" style="border-color:rgba(255,107,53,0.3);margin-bottom:16px">
+            <div class="card-label" style="color:var(--gold)">✈ FLIGHTS & ADDITIONAL COSTS</div>
+            <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+              <div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Return Flight (per person)</div>
+                <div style="font-size:18px;font-weight:700;color:var(--gold)">₹${sp.flight.toLocaleString('en-IN')}</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:2px">${d.flightRoutes.split('.')[0]}</div>
+              </div>
+              ${sp.intercity ? `<div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Intercity Flight</div>
+                <div style="font-size:18px;font-weight:700;color:var(--teal)">₹${sp.intercityCost.toLocaleString('en-IN')}</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:2px">${sp.intercityNote}</div>
+              </div>` : ''}
+              ${currentDest === 'malaysia' ? `<div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">From Singapore</div>
+                <div style="font-size:18px;font-weight:700;color:var(--teal)">₹10,000</div>
+                <div style="font-size:10px;color:var(--text-dim);margin-top:2px">per person (SG–KL)</div>
+              </div>` : ''}
+              ${currentDest === 'singapore' ? `<div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Cruise (if required)</div>
+                <div style="font-size:12px;font-weight:600;color:var(--text)">Std ₹15,000/pp/night</div>
+                <div style="font-size:12px;font-weight:600;color:var(--text)">Disney ₹30,000/pp/night</div>
+              </div>` : ''}
+              <div style="background:var(--navy-light);border-radius:8px;padding:12px">
+                <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Min. booking lead time</div>
+                <div style="font-size:14px;font-weight:700;color:var(--amber)">${sp.bookingWithVisa} days (with visa)</div>
+                <div style="font-size:12px;font-weight:600;color:var(--sage)">${sp.bookingWithoutVisa} days (own visa)</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,170,92,0.06);border:1px solid rgba(255,170,92,0.2);border-radius:10px;padding:14px 18px;margin-bottom:16px">
+            <div class="card-label" style="color:var(--teal);margin-bottom:8px">🛂 VISA NOTE</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.65">${sp.visaNote}</div>
+          </div>
+        `;
+      } else {
+        html += `<div class="budget-tiers">
+          <div class="budget-tier"><div class="tier-label budget">BUDGET</div><div class="tier-price budget">${b.budget.label}</div><div class="tier-pax">${b.budget.nights}</div><div class="tier-includes">${b.budget.includes}</div></div>
+          <div class="budget-tier"><div class="tier-label mid">MID</div><div class="tier-price mid">${b.mid.label}</div><div class="tier-pax">${b.mid.nights}</div><div class="tier-includes">${b.mid.includes}</div></div>
+          <div class="budget-tier"><div class="tier-label premium">PREMIUM</div><div class="tier-price premium">${b.premium.label}</div><div class="tier-pax">${b.premium.nights}</div><div class="tier-includes">${b.premium.includes}</div></div>
+          <div class="budget-tier"><div class="tier-label luxury">LUXURY</div><div class="tier-price luxury">${b.luxury.label}</div><div class="tier-pax">${b.luxury.nights}</div><div class="tier-includes">${b.luxury.includes}</div></div>
+        </div>`;
+      }
+      html += `
+        <div class="highlight-box sage" style="margin-top:16px">
+          <div class="hl-title">💡 Pro Tip — Anchoring Up</div>
+          <p>Always quote Standard first, then say: "For a small amount more per person per night — Deluxe gets you private transfers, better hotels, and a much smoother trip. Most clients who compare say it's worth it." 40–60% upgrade rate.</p>
         </div>
       `;
     }
-
     // ── FREE TIME ──
     if (tab === 'Free Time') {
       html += `
